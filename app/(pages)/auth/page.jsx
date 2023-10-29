@@ -2,13 +2,17 @@
 
 import Footer from "@/app/(pages)/auth/_components/Footer";
 import Image from "next/image";
-import { useRef, useState } from "react";
+import {useRef, useState} from "react";
 import clsx from "clsx";
-import { CSSTransition, SwitchTransition, Transition } from "react-transition-group";
+import {CSSTransition, SwitchTransition, Transition} from "react-transition-group";
 import Button from "@/app/_components/Button";
-import { useRouter } from "next/navigation";
+import {useRouter} from "next/navigation";
 import Input from "@/app/_components/Input";
 import axios from "axios";
+import ModalWindow from "@/app/_components/ModalWindow";
+import Verify from "@/app/(pages)/auth/_components/Verify";
+import {sendAuthCode} from "@/app/(pages)/auth/auth";
+import {reg} from "./reg";
 
 export default function Auth() {
 	const [isLogin, setIsLogin] = useState(true);
@@ -20,75 +24,31 @@ export default function Auth() {
 		phone: "",
 		inn: "",
 	});
+	const [modalVerify, setModalVerify] = useState(false);
 
 	const router = useRouter();
 
 	const nodeRef = useRef(null);
 
-	const validateRegistration = async () => {
-		try {
-			const res = await axios.post(`${process.env.host}/api/v2/organizations/registration/create`, registrationData);
-
-			console.log("res", res);
-
-			if (res.status === 200) {
-				const resData = res.data;
-
-				console.log("send-auth-code", resData);
-
-				return true;
-			} else {
-				console.error('Ошибка при отправке POST-запроса:', res.status);
-				return false;
-			}
-		} catch (error) {
-			console.error('Произошла ошибка при отправке POST-запроса:', error);
-			return false;
-		}
-	}
-
-	const validateLogin = async () => {
-		console.log("registrationData", registrationData)
-		try {
-			const res = await axios.post(`${process.env.host}/api/v2/send-auth-code`, loginData);
-
-			console.log("res", res);
-
-			if (res.status === 200) {
-				const resData = res.data;
-
-				console.log("send-auth-code", resData);
-
-				return true;
-			} else {
-				console.error('Ошибка при отправке POST-запроса:', res.status);
-				return false;
-			}
-		} catch (error) {
-			console.error('Произошла ошибка при отправке POST-запроса:', error);
-			return false;
-		}
-	}
-
 	const handleAuth = async () => {
-		const isValid = await validateLogin();
+		const isValid = sendAuthCode(loginData);
 
 		if (isLogin && isValid) {
-			// alert("Вы вошли в аккаунт");
+			setModalVerify(true);
 		} else {
 			router.push("/auth/registration");
 		}
 	};
 
 	const handleReg = async () => {
-		const isValid = await validateRegistration();
+		const isValid = await reg(registrationData);
 
 		if (isValid) {
 			router.push("/auth/registration");
 		} else {
-			console.log("Данные не валидны")
+			console.log("Данные не валидны");
 		}
-	}
+	};
 
 	return (
 		<section
@@ -154,12 +114,13 @@ export default function Auth() {
 							value={loginData.phone}
 							setValue={text => {
 								setLoginData({phone: text});
-								setRegistrationData({...registrationData, phone: text})
+								setRegistrationData({...registrationData, phone: text});
 							}}
 							placeholder={"Номер телефона"}
 							getOnlyNumber
 						/>
-						{!isLogin && <Input placeholder={"ИНН организации"} getOnlyNumber setValue={text => setRegistrationData({...registrationData, inn: text})} />}
+						{!isLogin && <Input placeholder={"ИНН организации"} getOnlyNumber
+											setValue={text => setRegistrationData({...registrationData, inn: text})} />}
 					</div>
 					<Button type={"success"} clickHandler={isLogin ? handleAuth : handleReg}>
 						<SwitchTransition>
@@ -187,6 +148,10 @@ export default function Auth() {
 				</div>
 			</div>
 			<Footer textColor={"white"} />
+			<ModalWindow trigger={modalVerify} setTrigger={(arg) => setModalVerify(arg)}>
+				<span></span>
+				<Verify phone={loginData.phone} closeModal={() => setModalVerify(false)} />
+			</ModalWindow>
 		</section>
 	);
 }

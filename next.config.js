@@ -1,7 +1,7 @@
-/** @type {import('next').NextConfig} */
+/** @type {import("next").NextConfig} */
 
 module.exports = {
 	env: {
-		host: "https://eco.null-it.com"
-	}
+		host: "https://eco.null-it.com",
+	},
 };
