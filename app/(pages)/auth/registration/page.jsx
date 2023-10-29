@@ -46,6 +46,7 @@ export default function Registration() {
 									old[index] = num;
 									setVerificationCode(old);
 								}}
+								key={index}
 							/>)}
 						</div>
 					</div>
