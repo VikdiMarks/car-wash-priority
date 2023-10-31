@@ -39,7 +39,7 @@ export default function DriversLayout({children}) {
 		}
 
 		fetchData();
-	}, []);
+	}, [popupNewDriverData]);
 
 	const handleAddDrivers = async () => {
 		let drivers = await addDrivers(popupNewDriverData);

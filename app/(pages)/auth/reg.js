@@ -5,8 +5,6 @@ import {readCookie} from "@/app/utils/cookie";
 export async function reg(data) {
 	const res = await axios.post(`${process.env.host}/api/v2/organizations/registration/create`, data);
 
-	console.log("res", res);
-
 	try {
 		if (res.status === 200) {
 			document.cookie = "organization_id=" + res.data.organization_id;
