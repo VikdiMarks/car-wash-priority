@@ -3,11 +3,13 @@
 import Image from "next/image";
 import Button from "@/app/_components/Button";
 import TitleAndOpinion from "@/app/(pages)/auth/_components/TitleAndOpinion";
-import { useState } from "react";
+import {useState} from "react";
 import Input from "@/app/_components/Input";
-import {reg, verifyTel} from "../reg";
+import {contactData, payData, reg, reqContactData, reqPayData, setData, verifyTel} from "../reg";
 import {readCookie} from "@/app/utils/cookie";
 import {sendAuthCode} from "@/app/(pages)/auth/auth";
+import {router} from "next/client";
+import {useRouter} from "next/navigation";
 
 export default function Registration() {
 	// step = 1 - подтверждение номера
@@ -17,13 +19,51 @@ export default function Registration() {
 	// step = 5 - расчет расходов и пополнения баланса
 	// step = 6 - рекомендуемое пополнение
 	const organizationId = readCookie("organization_id");
-	const phone = readCookie("phone")
+	const phone = readCookie("phone");
 
 	const [step, setStep] = useState(1);
 
-	const [verificationCode, setVerificationCode] = useState(["", "", "", "", "", ""]);
+	const [verificationCode, setVerificationCode] = useState(["", "", "", ""]);
 
-	const [costCalculation, setCostCalculation] = useState(["", ""])
+	const [costCalculation, setCostCalculation] = useState(["", ""]);
+	const [organizationData, setOrganizationData] = useState({
+		inn: "",
+		ogrn: "",
+		name: "",
+		address: "",
+	});
+	const [payData, setPayData] = useState({
+		settlement_number: "",
+		name: "",
+		bic: "",
+		correspondent_account: ""
+	})
+	const [contactData, setContactData] = useState({
+		fio: "",
+		email: "",
+	})
+
+	const router = useRouter();
+
+
+	const handleVerify = async () => {
+		const status = await verifyTel({phone: phone, code: verificationCode.join("")});
+		status && setStep(2);
+	};
+	const handleSetData = async () => {
+		const status = await setData(organizationData);
+		status && setStep(3);
+	};
+
+	const handlePayDataAuto = async () => {
+		const status = await reqPayData(payData);
+		status && setStep(4);
+	}
+
+	const handleContactData = async () => {
+		const status = await reqContactData(contactData);
+		status && setStep(5);
+	}
 
 	switch (step) {
 		case 1: {
@@ -38,7 +78,7 @@ export default function Registration() {
 						<p className={"mb-3 text-sm font-semibold text-black-100"}>Введите 6 цифры из сообщения</p>
 						<div className={"flex gap-2 items-center justify-center"}>
 							{verificationCode.map((value, index) => <Input
-								dataFocus={`focus-${index+1}`}
+								dataFocus={`focus-${index + 1}`}
 								type={"one-number"}
 								value={verificationCode[index]}
 								setValue={num => {
@@ -51,7 +91,7 @@ export default function Registration() {
 						</div>
 					</div>
 					<div>
-						<Button clickHandler={async () => await verifyTel({phone: phone, code: verificationCode.join("")}) && setStep(2)} type={"success"}>
+						<Button clickHandler={handleVerify} type={"success"}>
 							Подтвердить
 						</Button>
 						<p className={"text-sm text-black/40 text-center mt-4"}>
@@ -74,18 +114,23 @@ export default function Registration() {
 					<TitleAndOpinion title={"Подтверждение данных организации"}>
 						Проверьте правильность данных
 					</TitleAndOpinion>
-					<Input label={"ИНН"} placeholder={"366310082593"} />
-					<Input label={"ОГРН"} placeholder={"1085752004535"} />
+					<Input label={"ИНН"} placeholder={"366310082593"} value={organizationData.inn}
+						   setValue={(text) => setOrganizationData((prev) => ({...prev, inn: text}))} />
+					<Input label={"ОГРН"} placeholder={"1085752004535"} value={organizationData.ogrn} setValue={(text) => setOrganizationData((prev) => ({...prev, ogrn: text}))}/>
 					<Input label={"Форма собственности"} placeholder={"ООО без НДС"} />
 					<Input
 						label={"Наименование компании"}
-						placeholder={'ОБЩЕСТВО С ОГРАНИЧЕННОЙ ОТВЕТСТВЕННОСТЬЮ "ТДВ"'}
+						placeholder={"ОБЩЕСТВО С ОГРАНИЧЕННОЙ ОТВЕТСТВЕННОСТЬЮ \"ТДВ\""}
+						value={organizationData.name}
+						setValue={(text) => setOrganizationData((prev) => ({...prev, name: text}))}
 					/>
 					<Input
 						label={"Юридический адрес"}
 						placeholder={"302027, Орловская область, г Орёл, Октябрьская ул, д. 211, помещ. 114 офис 4"}
+						value={organizationData.address}
+						setValue={(text) => setOrganizationData((prev) => ({...prev, address: text}))}
 					/>
-					<Button clickHandler={() => setStep(3)} type={"success"} icon={"arrow-right"}>
+					<Button clickHandler={handleSetData} type={"success"} icon={"arrow-right"}>
 						Продолжить
 					</Button>
 				</>
@@ -97,10 +142,10 @@ export default function Registration() {
 					<TitleAndOpinion title={"Платежные данные"}>
 						Укажите реквизиты для получения счетов за обслуживание
 					</TitleAndOpinion>
-					<Input label={"Расчётный счёт"} />
-					<Input label={"Название банка"} />
-					<Input label={"БИК"} />
-					<Input label={"Корреспондентский счёт"} />
+					<Input label={"Расчётный счёт"}  value={payData.settlement_number} setValue={(text) => setPayData((prev) => ({...prev, settlement_number: text}))}/>
+					<Input label={"Название банка"}  value={payData.name} setValue={(text) => setPayData((prev) => ({...prev, name: text}))}/>
+					<Input label={"БИК"} value={payData.bic} setValue={(text) => setPayData((prev) => ({...prev, bic: text}))}/>
+					<Input label={"Корреспондентский счёт"}  value={payData.correspondent_account} setValue={(text) => setPayData((prev) => ({...prev, correspondent_account: text}))}/>
 					<div className={"flex gap-7 w-full max-[800px]:gap-1"}>
 						<div className={"w-1/2"}>
 							<Button clickHandler={() => setStep(2)} type={"secondary"} icon={"arrow-left"}>
@@ -108,7 +153,7 @@ export default function Registration() {
 							</Button>
 						</div>
 						<div className={"w-1/2"}>
-							<Button clickHandler={() => setStep(4)} type={"success"} icon={"arrow-right"}>
+							<Button clickHandler={handlePayDataAuto} type={"success"} icon={"arrow-right"}>
 								Продолжить
 							</Button>
 						</div>
@@ -131,8 +176,8 @@ export default function Registration() {
 							</span>
 						</p>
 					</TitleAndOpinion>
-					<Input label={"ФИО представителя"} />
-					<Input label={"E-mail для информирования "} />
+					<Input label={"ФИО представителя"} value={contactData.fio} setValue={(text) => setContactData((prev) => ({...prev, fio: text}))}/>
+					<Input label={"E-mail для информирования "} value={contactData.email} setValue={(text) => setContactData((prev) => ({...prev, email: text}))}/>
 					<div className={"flex gap-7 w-full max-[800px]:gap-1"}>
 						<div className={"w-1/2"}>
 							<Button clickHandler={() => setStep(3)} type={"secondary"} icon={"arrow-left"}>
@@ -140,7 +185,7 @@ export default function Registration() {
 							</Button>
 						</div>
 						<div className={"w-1/2"}>
-							<Button clickHandler={() => setStep(5)} type={"success"} icon={"arrow-right"}>
+							<Button clickHandler={handleContactData} type={"success"} icon={"arrow-right"}>
 								Продолжить
 							</Button>
 						</div>
@@ -171,19 +216,19 @@ export default function Registration() {
 							Сколько машин в организации?
 						</p>
 						<Input type={"one-number"} dataFocus={"focus-1"} value={costCalculation[0]} setValue={num => {
-							let old = [...costCalculation]
-							old[0] = num
-							setCostCalculation(old)
-						}}/>
+							let old = [...costCalculation];
+							old[0] = num;
+							setCostCalculation(old);
+						}} />
 						<Image width={32} height={32} src={"/img/icons/close.svg"} alt={"Иконка умножения"} />
 						<p className={"text-sm font-semibold text-black-100 text-center"}>
 							Сколько моек в неделю будет для каждой машины?
 						</p>
 						<Input type={"one-number"} dataFocus={"focus-2"} value={costCalculation[1]} setValue={num => {
-							let old = [...costCalculation]
-							old[1] = num
-							setCostCalculation(old)
-						}}/>
+							let old = [...costCalculation];
+							old[1] = num;
+							setCostCalculation(old);
+						}} />
 						<Image width={32} height={32} src={"/img/icons/close.svg"} alt={"Иконка умножения"} />
 						<div className={"flex gap-2 items-center justify-center"}>
 							<div className={"text-5xl text-green--main font-semibold max-[800px]:text-3xl"}>150₽</div>
@@ -223,10 +268,16 @@ export default function Registration() {
 						</p>
 					</div>
 					<div className="flex flex-col gap-4 w-full">
-						<Button clickHandler={() => alert("Вы прошли регистрацию")} type={"success"}>
+						<Button clickHandler={() => {
+							alert("Вы прошли регистрацию");
+							router.push("/home")
+						}} type={"success"}>
 							Получить счет
 						</Button>
-						<Button clickHandler={() => alert("Вы прошли регистрацию")} type={"secondary"}>
+						<Button clickHandler={() => {
+							alert("Вы прошли регистрацию");
+							router.push("/home")
+						}} type={"secondary"}>
 							Пропустить
 						</Button>
 					</div>
