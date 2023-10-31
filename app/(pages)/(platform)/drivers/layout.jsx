@@ -14,36 +14,46 @@ import {addDrivers, getDrivers} from "@/app/(pages)/(platform)/drivers/drivers";
 
 export default function DriversLayout({children}) {
 	const [isHaveContent, setIsHaveContent] = useState(false);
-
 	const [popups, setPopups] = useState({
 		addDriver: false,
 		editDriver: false,
 		deleteDriver: false,
 	});
-
 	const [popupNewDriverData, setPopupNewDriverData] = useState({
 		phone: "",
 		password: "",
 		role: 0,
 	});
 	const [drivers, setDrivers] = useState([]);
+	const [dataLoaded, setDataLoaded] = useState(false);
 
 	useEffect(() => {
-		setIsHaveContent(window.location.href.split("#")[1] === "fill");
-		setPopupNewDriverData({...popupNewDriverData, password: randomstring.generate(9)});
-
-		async function fetchData() {
-			const drivers = await getDrivers();
-
-			setDrivers(drivers);
+		if (!dataLoaded) {
+			fetchData();
+			setDataLoaded(true);
 		}
+	}, [dataLoaded]);
 
-		fetchData();
-	}, [popupNewDriverData]);
+	useEffect(() => {
+		setPopupNewDriverData({
+			...popupNewDriverData,
+			password: generatePassword(),
+		});
+	}, []);
+
+	const generatePassword = () => {
+		return randomstring.generate(9);
+	};
+
+
+	async function fetchData() {
+		const drivers = await getDrivers();
+		setDrivers(drivers);
+	}
 
 	const handleAddDrivers = async () => {
-		let drivers = await addDrivers(popupNewDriverData);
-		drivers = await getDrivers();
+		const status = await addDrivers(popupNewDriverData);
+		const drivers = await getDrivers();
 
 		setDrivers(drivers);
 
