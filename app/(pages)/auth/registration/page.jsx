@@ -11,6 +11,8 @@ import {sendAuthCode} from "@/app/(pages)/auth/auth";
 import {useRouter} from "next/navigation";
 
 function formatPhoneNumber(phoneNumber) {
+	if (!phoneNumber) return ""
+
 	const cleaned = phoneNumber.replace(/\D/g, "");
 
 	if (cleaned.length === 11) {
