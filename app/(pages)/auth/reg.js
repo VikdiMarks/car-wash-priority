@@ -31,7 +31,7 @@ export async function verifyTel(data) {
 			return true;
 		} else {
 			console.log("Неудачная проверка номера:", res.status);
-			return false;
+			return res;
 		}
 	} catch (error) {
 		console.log("Неудачная проверка номера:", error);

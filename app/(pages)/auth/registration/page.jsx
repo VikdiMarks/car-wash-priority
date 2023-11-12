@@ -58,7 +58,12 @@ export default function Registration() {
 
 	const handleVerify = async () => {
 		const status = await verifyTel({phone: phone, code: verificationCode.join("")});
-		status && setStep(2);
+
+		if(status) {
+			status && setStep(2);
+		} else {
+			alert("Неверный код");
+		}
 	};
 	const handleSetData = async () => {
 		const data = await setData(organizationData);
@@ -99,7 +104,7 @@ export default function Registration() {
 					</TitleAndOpinion>
 					<div className={"text-lg font-semibold text-black-100"}>{formatPhoneNumber(phone)}</div>
 					<div className={"text-center"}>
-						<p className={"mb-3 text-sm font-semibold text-black-100"}>Введите 6 цифры из сообщения</p>
+						<p className={"mb-3 text-sm font-semibold text-black-100"}>Введите 4 цифры из сообщения</p>
 						<div className={"flex gap-2 items-center justify-center"}>
 							{verificationCode.map((value, index) => <Input
 								dataFocus={`focus-${index + 1}`}
@@ -247,7 +252,7 @@ export default function Registration() {
 						<p className={"text-sm font-semibold text-black-100 text-center"}>
 							Сколько машин в организации?
 						</p>
-						<Input type={"one-number"} dataFocus={"focus-1"} value={costCalculation[0]} setValue={num => {
+						<Input type={"number"} dataFocus={"focus-1"} value={costCalculation[0]} setValue={num => {
 							let old = [...costCalculation];
 							old[0] = num;
 							setCostCalculation(old);
@@ -256,7 +261,7 @@ export default function Registration() {
 						<p className={"text-sm font-semibold text-black-100 text-center"}>
 							Сколько моек в неделю будет для каждой машины?
 						</p>
-						<Input type={"one-number"} dataFocus={"focus-2"} value={costCalculation[1]} setValue={num => {
+						<Input type={"number"} dataFocus={"focus-2"} value={costCalculation[1]} setValue={num => {
 							let old = [...costCalculation];
 							old[1] = num;
 							setCostCalculation(old);

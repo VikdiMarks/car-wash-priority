@@ -11,9 +11,9 @@ export default function Button({type, children, icon, clickHandler, disabled = f
 					onClick={clickHandler}
 					className={
 						"duration-500 hover:opacity-75 rounded-lg px-2 py-1 text-sm text-black-100 bg-black/5"
-					}>
+					}
+					disabled={disabled}>
 					{children}
-					disabled={disabled}
 				</button>
 			);
 		}
@@ -23,9 +23,9 @@ export default function Button({type, children, icon, clickHandler, disabled = f
 					onClick={clickHandler}
 					className={
 						"duration-500 hover:opacity-75 rounded-lg px-2 py-1 text-sm text-white bg-black-100"
-					}>
+					}
+					disabled={disabled}>
 					{children}
-					disabled={disabled}
 				</button>
 			);
 		}
@@ -35,9 +35,9 @@ export default function Button({type, children, icon, clickHandler, disabled = f
 					onClick={clickHandler}
 					className={
 						"hover:bg-green--main hover:text-white duration-500 px-2 py-1 text-sm text-center w-full rounded-lg text-green--main border border-green--main"
-					}>
+					}
+					disabled={disabled}>
 					{children}
-					disabled={disabled}
 				</button>
 			);
 		case "danger-secondary":
@@ -46,9 +46,9 @@ export default function Button({type, children, icon, clickHandler, disabled = f
 					onClick={clickHandler}
 					className={
 						"hover:bg-red--secondary hover:text-white duration-500 px-2 py-[13px] text-center w-full rounded-lg text-red--secondary border border-red--secondary"
-					}>
+					}
+					disabled={disabled}>
 					{children}
-					disabled={disabled}
 				</button>
 			);
 		default:
