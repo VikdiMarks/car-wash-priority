@@ -53,7 +53,7 @@ export async function saveOrganizationData() {
 		}
 	} catch (error) {
 		alert(error.response.data.message)
-		console.log("Неудачное заполнение данных:", error);
+		// console.log("Неудачное заполнение данных:", error);
 		return false;
 	}
 }

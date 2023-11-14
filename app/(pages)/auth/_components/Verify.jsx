@@ -28,7 +28,6 @@ export default function Verify({phone, closeModal}) {
 	const handleVerify = async () => {
 		const status = await verifyCode({phone: phone, code: verificationCode.join("")})
 
-		console.log("status",status)
 		if (status) {
 			await saveOrganizationData();
 			router.push("/home");
