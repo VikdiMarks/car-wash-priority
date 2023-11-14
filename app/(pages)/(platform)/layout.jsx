@@ -88,7 +88,7 @@ export default function PlatformLayout({ children }) {
 						path={"/settings"}
 					/>
 					<div className={"mt-3"}>
-						<Button type={"danger-secondary"} onclick={() => router.push("/")}>Выйти</Button>
+						<Button type={"danger-secondary"} clickHandler={() => router.push("/")}>Выйти</Button>
 					</div>
 					{windowWidth > 768 && (
 						<div className={"relative mt-6 flex-middle flex-col"}>
