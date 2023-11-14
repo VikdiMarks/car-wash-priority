@@ -6,13 +6,14 @@ import clsx from "clsx";
 import { Operation } from "@/app/(pages)/(platform)/_components/Operation";
 import Image from "next/image";
 import Button from "@/app/_components/Button";
-import { usePathname } from "next/navigation";
+import {usePathname, useRouter} from "next/navigation";
 import MenuItem from "@/app/(pages)/(platform)/_components/MenuItem";
 import ModalWindow from "@/app/_components/ModalWindow";
 import Input from "@/app/_components/Input";
 
 export default function PlatformLayout({ children }) {
 	const pathname = usePathname();
+	const router = useRouter();
 
 	const [isHaveContent, setIsHaveContent] = useState(false);
 
@@ -87,7 +88,7 @@ export default function PlatformLayout({ children }) {
 						path={"/settings"}
 					/>
 					<div className={"mt-3"}>
-						<Button type={"danger-secondary"}>Выйти</Button>
+						<Button type={"danger-secondary"} onclick={() => router.push("/")}>Выйти</Button>
 					</div>
 					{windowWidth > 768 && (
 						<div className={"relative mt-6 flex-middle flex-col"}>
