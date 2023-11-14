@@ -33,7 +33,6 @@ export default function Verify({phone, closeModal}) {
 			await saveOrganizationData();
 			router.push("/home");
 		} else {
-			alert("Такого пользователя не существует")
 			closeModal();
 		}
 	}

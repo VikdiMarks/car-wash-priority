@@ -28,8 +28,8 @@ export default function Auth() {
 	const [modalVerify, setModalVerify] = useState(false);
 	const [validateFields, setValidateFields] = useState({
 		phone: false,
-		inn: false
-	})
+		inn: false,
+	});
 
 	const router = useRouter();
 
@@ -47,21 +47,32 @@ export default function Auth() {
 
 	const handleReg = async () => {
 		const isValid = await reg(registrationData);
+		document.cookie = "inn=" + registrationData.inn + "; path=/; samesite=lax;";
 
-		if (isValid) {
+		if (!isValid.errors) {
 			router.push("/auth/registration");
 		} else {
-			console.log("Данные не валидны");
+			alert(isValid.message);
 		}
 	};
 
 	const checkField = (key, value, minLength) => {
+		if (key === "inn") {
+			if (value.trim().length === 8 || value.trim().length === 10 || value.trim().length === 12) {
+				setValidateFields({...validateFields, [key]: true});
+				return;
+			} else {
+				setValidateFields({...validateFields, [key]: true});
+				return;
+			}
+		}
+
 		if (value.trim().length < minLength) {
 			setValidateFields({...validateFields, [key]: false});
 		} else {
 			setValidateFields({...validateFields, [key]: true});
 		}
-	}
+	};
 
 	return (
 		<section
@@ -126,9 +137,9 @@ export default function Auth() {
 						<Input
 							value={loginData.phone}
 							setValue={text => {
-								setLoginData({phone: text.replace(/[\s-()+]/g, '')});
-								setRegistrationData({...registrationData, phone: text.replace(/[\s-()+]/g, '')});
-								checkField("phone", text, 11)
+								setLoginData({phone: text.replace(/[\s-()+]/g, "")});
+								setRegistrationData({...registrationData, phone: text.replace(/[\s-()+]/g, "")});
+								checkField("phone", text, 11);
 							}}
 							placeholder={"+7 (___) ___-__-__"}
 							mask={"+7 (999) 999-99-99"}
@@ -138,13 +149,14 @@ export default function Auth() {
 						{!isLogin && <Input placeholder={"ИНН организации"} getOnlyNumber
 											setValue={text => {
 												setRegistrationData({...registrationData, inn: text});
-												checkField("inn", text, 10)
+												checkField("inn", text, 12);
 											}}
-											mask={"9999999999"}
+											mask={"999999999999"}
 											type={"mask-input"}
 						/>}
 					</div>
-					<Button type={"success"} clickHandler={isLogin ? handleAuth : handleReg} disabled={isLogin ? !validateFields.phone : !(validateFields.phone && validateFields.inn)}>
+					<Button type={"success"} clickHandler={isLogin ? handleAuth : handleReg}
+							disabled={isLogin ? !validateFields.phone : !(validateFields.phone && validateFields.inn)}>
 						<SwitchTransition>
 							<CSSTransition
 								key={isLogin}

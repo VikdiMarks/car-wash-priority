@@ -43,7 +43,7 @@ export default function Registration() {
 
 	const [costCalculation, setCostCalculation] = useState(["", ""]);
 	const [organizationData, setOrganizationData] = useState({
-		inn: "", ogrn: "", name: "", address: "",
+		inn: readCookie("inn"), ogrn: "", name: "", address: "",
 	});
 	const [payData, setPayData] = useState({
 		settlement_number: "", name: "", bic: "", correspondent_account: "",

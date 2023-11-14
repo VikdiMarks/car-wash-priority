@@ -16,7 +16,7 @@ export async function reg(data) {
 
 	} catch (error) {
 		console.log("Произошла ошибка в запросе на авторизацию:", error);
-		return error.response.data.errors;
+		return error.response.data;
 	}
 }
 

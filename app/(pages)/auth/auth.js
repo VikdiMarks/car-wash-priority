@@ -10,11 +10,9 @@ export async function sendAuthCode(data) {
 		if (res.status === 200) {
 			return true;
 		}
-		alert(res.data.message);
 		console.error("Ошибка при отправке send-auth-code:", res.status);
 		return false;
 	} catch (error) {
-		alert(error.response.data.message)
 		console.error("Ошибка при отправке send-auth-code:", error);
 		return false;
 	}
