@@ -6,10 +6,11 @@ import clsx from "clsx";
 import { Operation } from "@/app/(pages)/(platform)/_components/Operation";
 import Image from "next/image";
 import Button from "@/app/_components/Button";
-import {usePathname, useRouter} from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import MenuItem from "@/app/(pages)/(platform)/_components/MenuItem";
 import ModalWindow from "@/app/_components/ModalWindow";
 import Input from "@/app/_components/Input";
+import { getOrganizationData } from "@/app/(pages)/(platform)/platform";
 
 export default function PlatformLayout({ children }) {
 	const pathname = usePathname();
@@ -18,13 +19,30 @@ export default function PlatformLayout({ children }) {
 	const [isHaveContent, setIsHaveContent] = useState(false);
 
 	const [windowWidth, setWindowWidth] = useState(0);
+	const [organizationInfo, setOrganizationInfo] = useState({});
 
 	useEffect(() => {
-		setWindowWidth(window.innerWidth)
+		setWindowWidth(window.innerWidth);
 	}, []);
 
 	useEffect(() => {
 		setIsHaveContent(window.location.href.split("#")[1] === "fill");
+	}, []);
+
+	useEffect(() => {
+		const fetchData = async () => {
+			try {
+				const data = await getOrganizationData();
+				console.log("data", data);
+				if (data) {
+					setOrganizationInfo(data);
+				}
+			} catch (error) {
+				console.error("Ошибка при получении данных об организации", error);
+			}
+		};
+
+		fetchData();
 	}, []);
 
 	const [showModalRefill, setShowModalRefill] = useState(false);
@@ -41,84 +59,43 @@ export default function PlatformLayout({ children }) {
 							"md:py-4 text-center text-white text-sm font-semibold w-full py-2.5 px-2 bg-green--main rounded-2xl"
 						}>
 						<p>ООО</p>
-						<p>«Название компании»</p>
+						<p>«{organizationInfo?.name}»</p>
 					</div>
 					<div className="bg-[#E5ECF6] py-[22px] px-6 w-full mt-4 rounded-2xl text-black-100 font-semibold">
 						<div className="text-sm flex justify-between items-center">
 							<p>Баланс</p>
-							<Image
-								width={24}
-								height={24}
-								src={"/img/icons/currency-rub.svg"}
-								alt={"Знак рубля"}
-							/>
+							<Image width={24} height={24} src={"/img/icons/currency-rub.svg"} alt={"Знак рубля"} />
 						</div>
-						<p className={"text-2xl mt-2 mb-6"}>0</p>
-						<Button
-							type={"success-secondary"}
-							clickHandler={() => setShowModalRefill(true)}>
+						<p className={"text-2xl mt-2 mb-6"}>{organizationInfo?.balance}</p>
+						<Button type={"success-secondary"} clickHandler={() => setShowModalRefill(true)}>
 							Пополнить
 						</Button>
 					</div>
 					<div className="flex flex-col gap-1 mt-36 mb-44 md:mb-1 md:mt-4 md:items-center">
-						<MenuItem
-							text={"Главная"}
-							icon={"statistic"}
-							path={"/home"}
-						/>
-						<MenuItem
-							text={"Водители"}
-							icon={"car"}
-							path={"/drivers"}
-						/>
-						<MenuItem
-							text={"История"}
-							icon={"box"}
-							path={"/history"}
-						/>
-						<MenuItem
-							text={"Счета и акты"}
-							icon={"document"}
-							path={"/bills-and-acts"}
-						/>
+						<MenuItem text={"Главная"} icon={"statistic"} path={"/home"} />
+						<MenuItem text={"Водители"} icon={"car"} path={"/drivers"} />
+						<MenuItem text={"История"} icon={"box"} path={"/history"} />
+						<MenuItem text={"Счета и акты"} icon={"document"} path={"/bills-and-acts"} />
 					</div>
-					<MenuItem
-						text={"Настройки"}
-						icon={"passport"}
-						path={"/settings"}
-					/>
+					<MenuItem text={"Настройки"} icon={"passport"} path={"/settings"} />
 					<div className={"mt-3"}>
-						<Button type={"danger-secondary"} clickHandler={() => router.push("/")}>Выйти</Button>
+						<Button type={"danger-secondary"} clickHandler={() => router.push("/")}>
+							Выйти
+						</Button>
 					</div>
 					{windowWidth > 768 && (
 						<div className={"relative mt-6 flex-middle flex-col"}>
-							<div
-								className={
-									"absolute top-0 h-[1px] left-[-16px] right-[-16px] bg-black/10"
-								}
-							/>
-							<Image
-								className={"my-4"}
-								width={36}
-								height={42}
-								src={"/img/logo.svg"}
-								alt={"Логотип"}
-							/>
-							<p className={"text-black/40 text-center"}>
-								© Car Wash Priority 2023
-							</p>
+							<div className={"absolute top-0 h-[1px] left-[-16px] right-[-16px] bg-black/10"} />
+							<Image className={"my-4"} width={36} height={42} src={"/img/logo.svg"} alt={"Логотип"} />
+							<p className={"text-black/40 text-center"}>© Car Wash Priority 2023</p>
 						</div>
 					)}
 				</aside>
 				<div className={"grow p-6 pb-4 lg:p-3 flex flex-col"}>
-					<div className={"grow"}>
-						{children}
-					</div>
+					<div className={"grow"}>{children}</div>
 					{windowWidth > 768 && (
 						<div className="flex gap-12 text-black/40 mt-12 lg:flex-col lg:gap-3 lg:items-center">
-							<a
-								className={"hover:opacity-75 ml-auto lg:ml-0"}
-								href="#">
+							<a className={"hover:opacity-75 ml-auto lg:ml-0"} href="#">
 								Поддержка
 							</a>
 							<a className={"hover:opacity-75"} href="#">
@@ -153,37 +130,19 @@ export default function PlatformLayout({ children }) {
 								<Operation type={"refill"} />
 							</>
 						) : (
-							<ZeroContent
-								text={
-									"Тут будут отображаться операции по балансу организации"
-								}
-							/>
+							<ZeroContent text={"Тут будут отображаться операции по балансу организации"} />
 						)}
 					</aside>
 				)}
 				{windowWidth <= 768 && (
 					<>
 						<div className={"relative flex-middle flex-col"}>
-							<div
-								className={
-									"absolute top-0 h-[1px] left-[-16px] right-[-16px] bg-black/10"
-								}
-							/>
-							<Image
-								className={"my-4"}
-								width={36}
-								height={42}
-								src={"/img/logo.svg"}
-								alt={"Логотип"}
-							/>
-							<p className={"text-black/40 text-center"}>
-								© Car Wash Priority 2023
-							</p>
+							<div className={"absolute top-0 h-[1px] left-[-16px] right-[-16px] bg-black/10"} />
+							<Image className={"my-4"} width={36} height={42} src={"/img/logo.svg"} alt={"Логотип"} />
+							<p className={"text-black/40 text-center"}>© Car Wash Priority 2023</p>
 						</div>
 						<div className="pb-4 flex gap-12 text-black/40 mt-6 lg:flex-col lg:gap-3 lg:items-center">
-							<a
-								className={"hover:opacity-75 ml-auto lg:ml-0"}
-								href="#">
+							<a className={"hover:opacity-75 ml-auto lg:ml-0"} href="#">
 								Поддержка
 							</a>
 							<a className={"hover:opacity-75"} href="#">
@@ -202,10 +161,7 @@ export default function PlatformLayout({ children }) {
 				title={"Пополнить баланс"}>
 				<div className={"flex-middle flex-col gap-3"}>
 					<span>Укажите сумму пополнения.</span>
-					<span>
-						Счет будет отправлен на почту и появится на странице
-						счетов
-					</span>
+					<span>Счет будет отправлен на почту и появится на странице счетов</span>
 				</div>
 				<Input label={"Сумма пополнения"} />
 				<div className={"w-[388px] md:w-full"}>

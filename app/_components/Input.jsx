@@ -14,7 +14,7 @@ export default function Input({ disabled, value, setValue, type, label, placehol
 						"focus:border-black/20 text-center w-[58px] h-[58px] flex-middle rounded-lg font-semibold text-2xl leading-[150%] border border-solid border-black/10 bg-white"
 					}
 					type={"number"}
-					value={value}
+					defaultValue={value}
 					onChange={e => {
 						let elems = document.querySelectorAll('[data-focus^="focus-"]');
 						if (e.target.value === "") {
@@ -40,6 +40,7 @@ export default function Input({ disabled, value, setValue, type, label, placehol
 						}
 						placeholder={placeholder}
 						disabled
+						defaultValue={value}
 					/>
 					<Image
 						className={"absolute bottom-4 right-5"}
@@ -60,6 +61,7 @@ export default function Input({ disabled, value, setValue, type, label, placehol
 							"bg-white h-[74px] rounded-lg px-5 pt-[38px] pb-4 border border-solid border-black/10 text-sm text-black-100 placeholder:text-black/20 w-full focus:border-black/20"
 						}
 						placeholder={placeholder}
+						defaultValue={value}
 					/>
 				</div>
 			);
