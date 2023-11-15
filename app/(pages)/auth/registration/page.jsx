@@ -39,7 +39,7 @@ export default function Registration() {
 
 	const [step, setStep] = useState(1);
 
-	const [verificationCode, setVerificationCode] = useState(["", "", "", ""]);
+	const [verificationCode, setVerificationCode] = useState(["", "", "", "", "", ""]);
 
 	const [costCalculation, setCostCalculation] = useState(["", ""]);
 	const [organizationData, setOrganizationData] = useState({
