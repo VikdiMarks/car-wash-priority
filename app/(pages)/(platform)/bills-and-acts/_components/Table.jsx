@@ -1,69 +1,18 @@
 import clsx from "clsx";
 import Image from "next/image";
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import Draggable from "react-draggable";
+import Item from "@/app/(pages)/(platform)/bills-and-acts/_components/Item";
 
-export default function Table({ head, content }) {
+export default function Table({ head, content = [] }) {
 	const [dataSorted, setDataSorted] = useState("desc");
 
 	const [windowWidth, setWindowWidth] = useState(0);
 
 	useEffect(() => {
-		setWindowWidth(window.innerWidth)
+		setWindowWidth(window.innerWidth);
 	}, []);
-
-	const getTableCell = (item, cell, index) => {
-		return (
-			<div
-				key={index}
-				className={clsx("flex items-center py-2 text-black-100", {
-					"px-4": index !== 0,
-					"gap-2": cell.type === "title",
-					"gap-1": cell.type === "date",
-					"gap-1.5": cell.type === "status",
-				})}
-				style={{
-					flexBasis: `${100 / item.length}%`,
-				}}>
-				{cell.type === "title" && (
-					<>
-						<Image width={24} height={24} src={"/img/icons/pdf.svg"} alt={"Иконка PDF"} />
-						<p>{cell.text}</p>
-					</>
-				)}
-				{cell.type === "date" &&
-					(cell.text === "Акт не подтвержден" ? (
-						<p className={"text-black/40"}>{cell.text}</p>
-					) : (
-						<>
-							<Image width={16} height={16} src={"/img/icons/calendar.svg"} alt={"Иконка календаря"} />
-							<p>{cell.text}</p>
-						</>
-					))}
-				{cell.type === "status" && (
-					<>
-						<div
-							className={clsx("w-[6px] h-[6px] rounded-full", {
-								"bg-green--main": cell.text === "Оплачен" || cell.text === "Принят",
-								"bg-red--secondary": cell.text === "Не оплачен",
-								"bg-[#59A8D4]": cell.text === "Ожидание",
-							})}></div>
-						<p
-							className={clsx({
-								"text-green--main": cell.text === "Оплачен" || cell.text === "Принят",
-								"text-red--secondary": cell.text === "Не оплачен",
-								"text-[#59A8D4]": cell.text === "Ожидание",
-							})}>
-							{cell.text}
-						</p>
-					</>
-				)}
-				{cell.type === "download" && (
-					<Image className={"cursor-pointer mx-auto duration-300 hover:scale-125"} width={16} height={16} src={"/img/icons/download.svg"} alt={"Иконка загрузки"} />
-				)}
-			</div>
-		);
-	};
+	console.log("content", content);
 
 	if (windowWidth > 768) {
 		return (
@@ -94,10 +43,8 @@ export default function Table({ head, content }) {
 						</div>
 					))}
 				</div>
-				{content.map((item, index) => (
-					<div key={index} className={"flex w-full text-black-100"}>
-						{item.map((cell, index) => getTableCell(item, cell, index))}
-					</div>
+				{content.map(({ id, uuid, status, status_name, sum, comment, created_at }) => (
+					<Item id={id} status_name={status_name} created_at={created_at} key={id} />
 				))}
 			</div>
 		);
@@ -131,10 +78,8 @@ export default function Table({ head, content }) {
 							</div>
 						))}
 					</div>
-					{content.map((item, index) => (
-						<div key={index} className={"flex w-full text-black-100"}>
-							{item.map((cell, index) => getTableCell(item, cell, index))}
-						</div>
+					{content.map(({ id, uuid, status, status_name, sum, comment, created_at }) => (
+						<Item id={id} status_name={status_name} created_at={created_at} key={id} />
 					))}
 				</div>
 			</Draggable>

@@ -10,7 +10,7 @@ import { usePathname, useRouter } from "next/navigation";
 import MenuItem from "@/app/(pages)/(platform)/_components/MenuItem";
 import ModalWindow from "@/app/_components/ModalWindow";
 import Input from "@/app/_components/Input";
-import { getOrganizationData } from "@/app/(pages)/(platform)/platform";
+import { createInvoices, getOrganizationData } from "@/app/(pages)/(platform)/platform";
 
 export default function PlatformLayout({ children }) {
 	const pathname = usePathname();
@@ -20,6 +20,7 @@ export default function PlatformLayout({ children }) {
 
 	const [windowWidth, setWindowWidth] = useState(0);
 	const [organizationInfo, setOrganizationInfo] = useState({});
+	const [invoices, setInvoices] = useState({});
 
 	useEffect(() => {
 		setWindowWidth(window.innerWidth);
@@ -163,9 +164,20 @@ export default function PlatformLayout({ children }) {
 					<span>Укажите сумму пополнения.</span>
 					<span>Счет будет отправлен на почту и появится на странице счетов</span>
 				</div>
-				<Input label={"Сумма пополнения"} />
+				<Input label={"Сумма пополнения"} setValue={sum => setInvoices({ sum: sum })} />
 				<div className={"w-[388px] md:w-full"}>
-					<Button type={"success"}>Получить счет на оплату</Button>
+					<Button
+						type={"success"}
+						clickHandler={async () => {
+							const res = await createInvoices(invoices);
+
+							if (res) {
+								setShowModalRefill(false);
+								setInvoices({});
+							}
+						}}>
+						Получить счет на оплату
+					</Button>
 				</div>
 			</ModalWindow>
 		</>

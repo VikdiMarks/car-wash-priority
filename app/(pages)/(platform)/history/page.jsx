@@ -5,12 +5,26 @@ import ZeroContent from "@/app/(pages)/(platform)/_components/ZeroContent";
 import Image from "next/image";
 import Table from "@/app/(pages)/(platform)/history/_components/Table";
 import Draggable from "react-draggable";
+import { getOrganizationData } from "@/app/(pages)/(platform)/platform";
+import { getHistory } from "@/app/(pages)/(platform)/history/api";
 
 export default function History() {
-	const [isHaveContent, setIsHaveContent] = useState(false);
+	const [isHaveContent, setIsHaveContent] = useState(null);
 
 	useEffect(() => {
-		setIsHaveContent(window.location.href.split("#")[1] === "fill");
+		console.log("history");
+		const fetchData = async () => {
+			try {
+				const data = await getHistory();
+				if (data) {
+					setIsHaveContent(data);
+				}
+			} catch (error) {
+				console.error("Ошибка при получении данных об организации", error);
+			}
+		};
+
+		fetchData();
 	}, []);
 
 	if (isHaveContent) {
@@ -82,7 +96,7 @@ export default function History() {
 						</div>
 					</div>
 				</div>
-				<Table/>
+				<Table data={isHaveContent} />
 			</section>
 		);
 	} else {
