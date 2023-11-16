@@ -2,7 +2,18 @@ import Image from "next/image";
 import clsx from "clsx";
 import InputMask from "react-input-mask";
 
-export default function Input({ disabled, value, setValue, type, label, placeholder, getOnlyNumber, invalidValue= "", dataFocus, mask }) {
+export default function Input({
+	disabled,
+	value,
+	setValue,
+	type,
+	label,
+	placeholder,
+	getOnlyNumber,
+	invalidValue = "",
+	dataFocus,
+	mask,
+}) {
 	switch (type) {
 		// TODO: для одинарных инпутов сделать 1 значение вводимое и автоперевод на следующее
 		case "one-number": {
@@ -23,8 +34,8 @@ export default function Input({ disabled, value, setValue, type, label, placehol
 							setValue(e.target.value.at(-1));
 						}
 						if (elems.length > 0) {
-							let curInd = Number(e.target.getAttribute("data-focus").split("-")[1]) - 1
-							elems[curInd === elems.length - 1 ? 0 : curInd + 1].focus()
+							let curInd = Number(e.target.getAttribute("data-focus").split("-")[1]) - 1;
+							elems[curInd === elems.length - 1 ? 0 : curInd + 1].focus();
 						}
 					}}
 				/>
@@ -61,6 +72,7 @@ export default function Input({ disabled, value, setValue, type, label, placehol
 							"bg-white h-[74px] rounded-lg px-5 pt-[38px] pb-4 border border-solid border-black/10 text-sm text-black-100 placeholder:text-black/20 w-full focus:border-black/20"
 						}
 						placeholder={placeholder}
+						onChange={e => setValue(e.target.value)}
 						defaultValue={value}
 					/>
 				</div>
@@ -78,24 +90,17 @@ export default function Input({ disabled, value, setValue, type, label, placehol
 						className={clsx(
 							"text-sm text-black-100 placeholder:text-black/20 w-full rounded-lg px-4 py-2.5 border border-solid border-black/10 focus:border-black/20",
 							{
-								"text-black/20": disabled
-							}
+								"text-black/20": disabled,
+							},
 						)}
-						disabled={!!disabled}
-					>
-						{(inputProps) => (
-							<input
-								type={"text"}
-								placeholder={placeholder}
-								{...inputProps}
-							/>
-						)}
+						disabled={!!disabled}>
+						{inputProps => <input type={"text"} placeholder={placeholder} {...inputProps} />}
 					</InputMask>
 				</div>
-			)
+			);
 		}
 		default: {
-			console.log("invalidValue", invalidValue)
+			console.log("invalidValue", invalidValue);
 			return (
 				<div className={"w-full flex flex-col gap-3"}>
 					{label && <p className={"text-sm font-semibold text-black-100"}>{label}</p>}
@@ -104,16 +109,20 @@ export default function Input({ disabled, value, setValue, type, label, placehol
 						className={clsx(
 							"text-sm text-black-100 placeholder:text-black/20 w-full rounded-lg px-4 py-2.5 border border-solid border-black/10 focus:border-black/20",
 							{
-								"text-black/20": disabled
-							}
+								"text-black/20": disabled,
+							},
 						)}
 						placeholder={placeholder}
 						value={value}
 						disabled={!!disabled}
 						onChange={e => setValue(e.target.value)}
-						style={{borderColor: invalidValue ? "red" : "inherit"}}
+						style={{ borderColor: invalidValue ? "red" : "inherit" }}
 					/>
-					{!!invalidValue && <span className={"text-sm"} style={{color: "red"}}>{invalidValue}</span>}
+					{!!invalidValue && (
+						<span className={"text-sm"} style={{ color: "red" }}>
+							{invalidValue}
+						</span>
+					)}
 				</div>
 			);
 		}

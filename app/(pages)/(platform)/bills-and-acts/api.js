@@ -44,7 +44,10 @@ export async function getInvoicesFile(id, uuid) {
 		);
 
 		if (res.status === 200) {
-			const pdfBlob = new Blob([res.data], { type: "application/pdf" });
+			const pdfBlob = new Blob([pdfData], { type: "application/pdf" });
+			console.log("pdfBlob", pdfBlob);
+			console.log("URL.createObjectURL(pdfBlob)", URL.createObjectURL(pdfBlob));
+
 			return URL.createObjectURL(pdfBlob);
 		}
 		console.error("Ошибка при получении invoices:", res.status);

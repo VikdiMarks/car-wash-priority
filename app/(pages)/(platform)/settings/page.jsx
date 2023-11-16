@@ -6,7 +6,8 @@ import Button from "@/app/_components/Button";
 import toast from "react-hot-toast";
 import Checkbox from "@/app/_components/Checkbox";
 import { useEffect, useState } from "react";
-import {getContactData, getOrganizationData, getPayData} from "@/app/(pages)/(platform)/platform";
+import { getContactData, getOrganizationData, getPayData } from "@/app/(pages)/(platform)/platform";
+import { editEmail, editName } from "@/app/(pages)/(platform)/settings/api";
 
 const repeatingStyles = {
 	block: "rounded-2xl bg-[#F7F9FB] p-6 w-full gap-6 flex flex-col",
@@ -18,18 +19,22 @@ export default function Settings() {
 	const [organizationInfo, setOrganizationInfo] = useState({});
 	const [payInfo, setPayInfo] = useState({});
 	const [contactInfo, setContactInfo] = useState({});
+	const [name, setName] = useState("");
+	const [email, setEmail] = useState("");
 
 	useEffect(() => {
 		setWindowWidth(window.innerWidth);
 	}, []);
 
-	useEffect( () => {
+	useEffect(() => {
 		const fetchData = async () => {
 			try {
 				const data = await getOrganizationData();
 				console.log("data", data);
 				if (data) {
 					setOrganizationInfo(data);
+					setName(data.fio);
+					setEmail(data.email);
 				}
 			} catch (error) {
 				console.error("Ошибка при получении данных об организации", error);
@@ -39,7 +44,7 @@ export default function Settings() {
 		fetchData();
 	}, []);
 
-	useEffect( () => {
+	useEffect(() => {
 		const fetchData = async () => {
 			try {
 				const data = await getPayData();
@@ -55,7 +60,7 @@ export default function Settings() {
 		fetchData();
 	}, []);
 
-	useEffect( () => {
+	useEffect(() => {
 		const fetchData = async () => {
 			try {
 				const data = await getContactData();
@@ -81,26 +86,10 @@ export default function Settings() {
 						<span className={"text-purple--main cursor-pointer"}>службу поддержки</span>
 					</p>
 				</div>
-				<Input
-					type={"big-input:disabled"}
-					label={"ИНН"}
-					value={organizationInfo?.inn}
-				/>
-				<Input
-					type={"big-input:disabled"}
-					label={"ОГРН"}
-					value={organizationInfo?.ogrn}
-				/>
-				<Input
-					type={"big-input:disabled"}
-					label={"Наименование компании"}
-					value={organizationInfo?.name}
-				/>
-				<Input
-					type={"big-input:disabled"}
-					label={"Юридический адрес"}
-					value={organizationInfo?.address}
-				/>
+				<Input type={"big-input:disabled"} label={"ИНН"} value={organizationInfo?.inn} />
+				<Input type={"big-input:disabled"} label={"ОГРН"} value={organizationInfo?.ogrn} />
+				<Input type={"big-input:disabled"} label={"Наименование компании"} value={organizationInfo?.name} />
+				<Input type={"big-input:disabled"} label={"Юридический адрес"} value={organizationInfo?.address} />
 				<div className={"flex items-center"}>
 					<h1 className={repeatingStyles.title}>Платежные данные</h1>
 				</div>
@@ -118,13 +107,36 @@ export default function Settings() {
 					<h1 className={repeatingStyles.title}>Данные пользователя</h1>
 					<div className="flex-middle gap-2">
 						<Button type={"medium-gray"}>Отменить</Button>
-						<Button clickHandler={() => toast.success("Изменения сохранены")} type={"medium-black"}>
+						<Button
+							clickHandler={async () => {
+								console.log("name", name);
+								console.log("email", email);
+								const resName = await editName({ name: name });
+								const resEmail = await editEmail({ email: email });
+
+								if (resName && resEmail) {
+									toast.success("Изменения сохранены");
+								}
+							}}
+							type={"medium-black"}>
 							{windowWidth <= 950 ? "Сохранить" : "Сохранить изменения"}
 						</Button>
 					</div>
 				</div>
-				<Input type={"big-input"} label={"ФИО"} value={contactInfo?.fio} />
-				<Input type={"big-input"} label={"E-mail"} value={contactInfo?.email} />
+				<Input
+					type={"big-input"}
+					label={"ФИО"}
+					value={contactInfo?.fio}
+					setValue={value => {
+						setName(value);
+					}}
+				/>
+				<Input
+					type={"big-input"}
+					label={"E-mail"}
+					value={contactInfo?.email}
+					setValue={value => setEmail(value)}
+				/>
 				<div className={"flex items-center"}>
 					<h1 className={repeatingStyles.title}>Настройки уведомлений</h1>
 				</div>
