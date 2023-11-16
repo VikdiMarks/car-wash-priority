@@ -3,11 +3,9 @@
 import { useEffect, useState } from "react";
 import clsx from "clsx";
 import Image from "next/image";
-import ZeroContent from "@/app/(pages)/(platform)/_components/ZeroContent";
 import Bills from "@/app/(pages)/(platform)/bills-and-acts/_components/Bills";
 import Acts from "@/app/(pages)/(platform)/bills-and-acts/_components/Acts";
-import { getHistory } from "@/app/(pages)/(platform)/history/api";
-import { getActs, getInvoices } from "@/app/(pages)/(platform)/bills-and-acts/api";
+import { getActs, getInvoices, getInvoicesFile } from "@/app/(pages)/(platform)/bills-and-acts/api";
 
 export default function BillsAndActs() {
 	const [subpage, setSubpage] = useState("счета");
@@ -19,6 +17,14 @@ export default function BillsAndActs() {
 			try {
 				const data = await getInvoices();
 				if (data) {
+					data.models = await Promise.all(
+						data.models.map(async item => {
+							item.document = await getInvoicesFile(item.id, item.uuid);
+							console.log("item", item);
+							return item;
+						}),
+					);
+
 					setIsBillsContent(data.models);
 				}
 			} catch (error) {

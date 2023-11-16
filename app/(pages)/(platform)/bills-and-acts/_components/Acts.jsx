@@ -22,6 +22,7 @@ export default function Acts({ data }) {
 				},
 			]}
 			content={data}
+			type={"acts"}
 		/>
 	);
 }

@@ -19,6 +19,7 @@ export default function Bills({ data }) {
 				},
 			]}
 			content={data}
+			type={"bills"}
 		/>
 	);
 }

@@ -34,3 +34,23 @@ export async function getActs() {
 		return false;
 	}
 }
+
+export async function getInvoicesFile(id, uuid) {
+	try {
+		const res = await axiosInstance.get(
+			`${process.env.host}/api/v2/organizations/${readCookie(
+				"organization_id",
+			)}/invoices/get-pdf?id=${id}&uuid=${uuid}`,
+		);
+
+		if (res.status === 200) {
+			const pdfBlob = new Blob([res.data], { type: "application/pdf" });
+			return URL.createObjectURL(pdfBlob);
+		}
+		console.error("Ошибка при получении invoices:", res.status);
+		return false;
+	} catch (error) {
+		console.error("Ошибка при получении invoices:", error);
+		return false;
+	}
+}

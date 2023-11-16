@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Draggable from "react-draggable";
 import Item from "@/app/(pages)/(platform)/bills-and-acts/_components/Item";
 
-export default function Table({ head, content = [] }) {
+export default function Table({ head, content = [], type = "bills" }) {
 	const [dataSorted, setDataSorted] = useState("desc");
 
 	const [windowWidth, setWindowWidth] = useState(0);
@@ -43,8 +43,16 @@ export default function Table({ head, content = [] }) {
 						</div>
 					))}
 				</div>
-				{content.map(({ id, uuid, status, status_name, sum, comment, created_at }) => (
-					<Item id={id} status_name={status_name} created_at={created_at} key={id} />
+				{content.map(({ id, uuid, status, status_name, sum, comment, created_at, document }) => (
+					<Item
+						id={id}
+						status_name={status_name}
+						created_at={created_at}
+						key={id}
+						uuid={uuid}
+						type={type}
+						document={document}
+					/>
 				))}
 			</div>
 		);
@@ -78,8 +86,16 @@ export default function Table({ head, content = [] }) {
 							</div>
 						))}
 					</div>
-					{content.map(({ id, uuid, status, status_name, sum, comment, created_at }) => (
-						<Item id={id} status_name={status_name} created_at={created_at} key={id} />
+					{content.map(({ id, uuid, status, status_name, sum, comment, created_at, document }) => (
+						<Item
+							id={id}
+							status_name={status_name}
+							created_at={created_at}
+							key={id}
+							uuid={uuid}
+							type={type}
+							document={document}
+						/>
 					))}
 				</div>
 			</Draggable>

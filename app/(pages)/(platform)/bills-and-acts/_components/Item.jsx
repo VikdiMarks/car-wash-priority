@@ -1,7 +1,10 @@
+"use client";
 import clsx from "clsx";
 import Image from "next/image";
+import { useEffect, useState } from "react";
+import { getInvoices, getInvoicesFile } from "@/app/(pages)/(platform)/bills-and-acts/api";
 
-export default function Item({ id, created_at, status_name }) {
+export default function Item({ id, created_at, status_name, uuid, type, document = "" }) {
 	return (
 		<div className={"flex w-full text-black-100"}>
 			<div className={clsx("flex items-center py-2 text-black-100 gap-2")} style={{ flexBasis: "25%" }}>
@@ -35,7 +38,11 @@ export default function Item({ id, created_at, status_name }) {
 					})()}
 				</p>
 			</div>
-			<div className={clsx("flex items-center py-2 text-black-100 gap-2")} style={{ flexBasis: "25%" }}>
+			<a
+				href={document}
+				className={clsx("flex items-center py-2 text-black-100 gap-2")}
+				style={{ flexBasis: "25%" }}
+				download>
 				<Image
 					className={"cursor-pointer mx-auto duration-300 hover:scale-125"}
 					width={16}
@@ -43,7 +50,7 @@ export default function Item({ id, created_at, status_name }) {
 					src={"/img/icons/download.svg"}
 					alt={"Иконка загрузки"}
 				/>
-			</div>
+			</a>
 		</div>
 	);
 }
