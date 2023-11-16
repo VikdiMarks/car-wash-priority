@@ -43,7 +43,7 @@ export default function Table({ head, content = [], type = "bills" }) {
 						</div>
 					))}
 				</div>
-				{content.map(({ id, uuid, status, status_name, sum, comment, created_at, document }) => (
+				{content.map(({ id, uuid, status, status_name, sum, comment, created_at, document, date }) => (
 					<Item
 						id={id}
 						status_name={status_name}
@@ -52,6 +52,7 @@ export default function Table({ head, content = [], type = "bills" }) {
 						uuid={uuid}
 						type={type}
 						document={document}
+						date={date}
 					/>
 				))}
 			</div>

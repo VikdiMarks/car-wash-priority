@@ -20,7 +20,7 @@ export default function BillsAndActs() {
 					data.models = await Promise.all(
 						data.models.map(async item => {
 							item.document = await getInvoicesFile(item.id, item.uuid);
-							console.log("item", item);
+
 							return item;
 						}),
 					);
