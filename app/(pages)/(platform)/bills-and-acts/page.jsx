@@ -16,15 +16,7 @@ export default function BillsAndActs() {
 		const fetchData = async () => {
 			try {
 				const data = await getInvoices();
-				if (data) {
-					data.models = await Promise.all(
-						data.models.map(async item => {
-							item.document = await getInvoicesFile(item.id, item.uuid);
-
-							return item;
-						}),
-					);
-
+				if (data.models) {
 					setIsBillsContent(data.models);
 				}
 			} catch (error) {
