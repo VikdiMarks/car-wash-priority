@@ -11,8 +11,9 @@ import MenuItem from "@/app/(pages)/(platform)/_components/MenuItem";
 import ModalWindow from "@/app/_components/ModalWindow";
 import Input from "@/app/_components/Input";
 import { createInvoices, getOrganizationData } from "@/app/(pages)/(platform)/platform";
+import withAuth from "@/app/withAuth";
 
-export default function PlatformLayout({ children }) {
+function PlatformLayout({ children }) {
 	const pathname = usePathname();
 	const router = useRouter();
 
@@ -80,7 +81,12 @@ export default function PlatformLayout({ children }) {
 					</div>
 					<MenuItem text={"Настройки"} icon={"passport"} path={"/settings"} />
 					<div className={"mt-3"}>
-						<Button type={"danger-secondary"} clickHandler={() => router.push("/")}>
+						<Button
+							type={"danger-secondary"}
+							clickHandler={() => {
+								document.cookie = "bearer_token=;";
+								router.push("/auth");
+							}}>
 							Выйти
 						</Button>
 					</div>
@@ -183,3 +189,5 @@ export default function PlatformLayout({ children }) {
 		</>
 	);
 }
+
+export default withAuth(PlatformLayout);
