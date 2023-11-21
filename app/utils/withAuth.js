@@ -1,13 +1,10 @@
-// withAuth.js
-
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { readCookie } from "@/app/utils/cookie";
+import { redirect } from "next/navigation";
 
 const withAuth = WrappedComponent => {
 	return props => {
-		const router = useRouter();
-
 		useEffect(() => {
 			const bearer_token = readCookie("bearer_token");
 			let isAuthenticated = false;
@@ -17,7 +14,7 @@ const withAuth = WrappedComponent => {
 			}
 
 			if (!isAuthenticated) {
-				router.push("/auth");
+				redirect("/auth");
 			}
 		}, []);
 		return <WrappedComponent {...props} />;

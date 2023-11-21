@@ -11,7 +11,7 @@ import MenuItem from "@/app/(pages)/(platform)/_components/MenuItem";
 import ModalWindow from "@/app/_components/ModalWindow";
 import Input from "@/app/_components/Input";
 import { createInvoices, getOrganizationData } from "@/app/(pages)/(platform)/platform";
-import withAuth from "@/app/withAuth";
+import withAuth from "@/app/utils/withAuth";
 
 function PlatformLayout({ children }) {
 	const pathname = usePathname();

@@ -48,7 +48,8 @@ export default function Item({ id, created_at, status_name, uuid, type, document
 				href={document}
 				className={clsx("flex items-center py-2 text-black-100 gap-2")}
 				style={{ flexBasis: type === "bills" ? "25%" : "20%" }}
-				download={type === "bills" ? `Счёт №${id}` : `Акт №${id}`}>
+				download={type === "bills" ? `Счёт №${id}` : `Акт №${id}`}
+				target={"_blank"}>
 				<Image
 					className={"cursor-pointer mx-auto duration-300 hover:scale-125"}
 					width={16}
