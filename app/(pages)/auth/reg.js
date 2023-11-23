@@ -1,6 +1,6 @@
 import axios from "axios";
-import {axiosInstance} from "@/app/utils/axios-instance";
-import {readCookie} from "@/app/utils/cookie";
+import { axiosInstance } from "@/app/utils/axios-instance";
+import { readCookie } from "@/app/utils/cookie";
 
 export async function reg(data) {
 	try {
@@ -13,7 +13,6 @@ export async function reg(data) {
 		}
 		console.log("Произошла ошибка в запросе на авторизацию:", res.status);
 		return false;
-
 	} catch (error) {
 		console.log("Произошла ошибка в запросе на авторизацию:", error);
 		return error.response.data;
@@ -26,7 +25,11 @@ export async function verifyTel(data) {
 
 		if (res.status === 200) {
 			const tokenExpiryTime = new Date(res.data.auth.expires_at).getTime();
-			document.cookie = "bearer_token=" + res.data.auth.bearer_token + "; path=/; samesite=lax; expires=" + new Date(tokenExpiryTime).toUTCString();
+			document.cookie =
+				"bearer_token=" +
+				res.data.auth.bearer_token +
+				"; path=/; samesite=lax; expires=" +
+				new Date(tokenExpiryTime).toUTCString();
 
 			return true;
 		} else {
@@ -41,7 +44,10 @@ export async function verifyTel(data) {
 
 export async function setData(data) {
 	try {
-		const res = await axiosInstance.post(`/api/v2/organizations/${readCookie("organization_id")}/registration/set-data`, data);
+		const res = await axiosInstance.post(
+			`/api/v2/organizations/${readCookie("organization_id")}/registration/set-data`,
+			data,
+		);
 
 		if (res.status === 200) {
 			return true;
@@ -57,7 +63,10 @@ export async function setData(data) {
 
 export async function reqPayData(data) {
 	try {
-		const res = await axiosInstance.post(`/api/v2/organizations/${readCookie("organization_id")}/registration/set-pay-data`, data);
+		const res = await axiosInstance.post(
+			`/api/v2/organizations/${readCookie("organization_id")}/registration/set-pay-data`,
+			data,
+		);
 
 		if (res.status === 200) {
 			return true;
@@ -73,10 +82,48 @@ export async function reqPayData(data) {
 
 export async function reqContactData(data) {
 	try {
-		const res = await axiosInstance.post(`/api/v2/organizations/${readCookie("organization_id")}/registration/set-contact-data`, data);
+		const res = await axiosInstance.post(
+			`/api/v2/organizations/${readCookie("organization_id")}/registration/set-contact-data`,
+			data,
+		);
 
 		if (res.status === 200) {
 			return true;
+		} else {
+			console.log("Неудачное заполнение данных:", res.status);
+			return false;
+		}
+	} catch (error) {
+		console.log("Неудачное заполнение данных:", error);
+		return error.response.data.errors;
+	}
+}
+
+export async function getOrganizationData() {
+	try {
+		const res = await axiosInstance.get(`/api/v2/organizations/${readCookie("organization_id")}`);
+
+		if (res.status === 200) {
+			return res.data.data;
+		} else {
+			console.log("Неудачная проверка данных:", res.status);
+			return false;
+		}
+	} catch (error) {
+		console.log("Неудачная проверка данных:", error);
+		return error.response.data.errors;
+	}
+}
+
+export async function createByCalc(data) {
+	try {
+		const res = await axiosInstance.post(
+			`/api/v2/organizations/${readCookie("organization_id")}/invoices/create-by-calc`,
+			data,
+		);
+
+		if (res.status === 200 || res.status === 201) {
+			return res.data.organization_invoice;
 		} else {
 			console.log("Неудачное заполнение данных:", res.status);
 			return false;
