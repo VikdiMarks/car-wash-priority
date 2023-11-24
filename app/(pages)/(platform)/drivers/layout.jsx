@@ -1,6 +1,6 @@
 "use client";
 
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import ZeroContent from "@/app/(pages)/(platform)/_components/ZeroContent";
 import Image from "next/image";
 import ModalWindow from "@/app/_components/ModalWindow";
@@ -10,9 +10,9 @@ import randomstring from "randomstring";
 import toast from "react-hot-toast";
 import Table from "@/app/(pages)/(platform)/drivers/_components/Table";
 import driversData from "@/app/(pages)/(platform)/drivers/_components/drivers";
-import {addDrivers, getDrivers} from "@/app/(pages)/(platform)/drivers/drivers";
+import { addDrivers, getDrivers } from "@/app/(pages)/(platform)/drivers/drivers";
 
-export default function DriversLayout({children}) {
+export default function DriversLayout({ children }) {
 	const [isHaveContent, setIsHaveContent] = useState(false);
 
 	const [popups, setPopups] = useState({
@@ -30,7 +30,7 @@ export default function DriversLayout({children}) {
 
 	useEffect(() => {
 		setIsHaveContent(window.location.href.split("#")[1] === "fill");
-		setPopupNewDriverData({...popupNewDriverData, password: randomstring.generate(9)});
+		setPopupNewDriverData({ ...popupNewDriverData, password: randomstring.generate(9) });
 
 		async function fetchData() {
 			const drivers = await getDrivers();
@@ -47,7 +47,7 @@ export default function DriversLayout({children}) {
 
 		setDrivers(drivers);
 
-		setPopups({...popups, addDriver: false});
+		setPopups({ ...popups, addDriver: false });
 	};
 
 	return (
@@ -81,7 +81,7 @@ export default function DriversLayout({children}) {
 						</div>
 					</div>
 					<div
-						onClick={() => setPopups({...popups, addDriver: true})}
+						onClick={() => setPopups({ ...popups, addDriver: true })}
 						className={
 							"flex-middle gap-2 p-4 rounded-2xl border border-dashed border-green--main bg-[rgba(38,173,96,0.10)] cursor-pointer mt-4 duration-300 hover:bg-[rgba(38,173,96,0.2)]"
 						}>
@@ -100,7 +100,7 @@ export default function DriversLayout({children}) {
 			</section>
 			<ModalWindow
 				trigger={popups.addDriver}
-				setTrigger={arg => setPopups({...popups, addDriver: arg})}
+				setTrigger={arg => setPopups({ ...popups, addDriver: arg })}
 				title={"Добавить водителя"}>
 				<div className={"flex-middle flex-col gap-3"}>
 					<span>
@@ -112,41 +112,14 @@ export default function DriversLayout({children}) {
 				<Input
 					label={"Номер телефона"}
 					value={popupNewDriverData.phone}
-					setValue={text => setPopupNewDriverData({...popupNewDriverData, phone: text.replace(/[\s-()+]/g, '')})}
+					setValue={text =>
+						setPopupNewDriverData({ ...popupNewDriverData, phone: text.replace(/[\s-()+]/g, "") })
+					}
 					placeholder={"+7 (___) ___-__-__"}
 					mask={"+7 (999) 999-99-99"}
 					type={"mask-input"}
 					getOnlyNumber
 				/>
-				<div className={"flex items-center justify-between gap-5 w-full"}>
-					<div>
-						<div>
-							<Input
-								label={"Пароль"}
-								disabled
-								value={popupNewDriverData.password}
-								setValue={arg => setPopupNewDriverData({...popupNewDriverData, password: arg})}
-							/>
-						</div>
-						<p
-							className={"cursor-pointer mt-1 text-sm text-purple--main"}
-							onClick={() =>
-								setPopupNewDriverData({...popupNewDriverData, password: randomstring.generate(9)})
-							}>
-							Сгенерировать новый
-						</p>
-					</div>
-					<div
-						className={"flex-middle gap-1 cursor-pointer duration-300 hover:opacity-75"}
-						onClick={() => {
-							navigator.clipboard.writeText(popupNewDriverData.password).then(function() {
-								toast.success("Пароль скопирован в буфер обмена");
-							});
-						}}>
-						<Image width={20} height={20} src={"/img/icons/copy.svg"} alt={"Копировать"} />
-						<p className={"text-sm text-black/40"}>Скопировать</p>
-					</div>
-				</div>
 				<div className={"w-[388px] md:w-full"}>
 					<Button type={"success"} clickHandler={handleAddDrivers}>
 						Добавить
