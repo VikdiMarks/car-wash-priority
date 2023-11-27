@@ -7,6 +7,8 @@ import Table from "@/app/(pages)/(platform)/history/_components/Table";
 import Draggable from "react-draggable";
 import { getOrganizationData } from "@/app/(pages)/(platform)/platform";
 import { getHistory } from "@/app/(pages)/(platform)/history/api";
+import { DatePicker, Stack } from "rsuite";
+import "rsuite/dist/rsuite.min.css";
 
 export default function History() {
 	const [isHaveContent, setIsHaveContent] = useState(null);
@@ -62,34 +64,22 @@ export default function History() {
 						/>
 					</div>
 					{/* TODO: поправить сьезжающие иконки календарей в инпутах (мобилы) */}
-					<div className="flex items-center gap-2 md:w-full md:flex-col">
+					<div className="flex items-center gap-2 md:w-full md:flex-col w-full">
 						<div className={"relative max-w-[166px] md:w-full md:max-w-full"}>
-							<input
+							<DatePicker
+								format="MM/dd/yyyy"
 								className={
-									"pr-[40px] text-center w-full border border-black/10 bg-white/80 rounded-lg text-sm px-4 py-1 placeholder:text-black/20 text-black-100"
+									"text-center w-full border border-black/10 bg-white/80 rounded-lg text-sm placeholder:text-black/20 text-black-100"
 								}
 								placeholder={"Дата от"}
-							/>
-							<Image
-								className={"absolute right-11 top-1/2 -translate-y-1/2"}
-								width={20}
-								height={20}
-								src={"/img/icons/calendar-for-input.svg"}
-								alt={"Дата от"}
 							/>
 						</div>
 						<div className={"w-1 h-[1px] bg-black md:hidden"} />
 						<div className={"relative max-w-[166px] md:w-full md:max-w-full"}>
-							<Image
-								className={"absolute left-11 top-1/2 -translate-y-1/2"}
-								width={20}
-								height={20}
-								src={"/img/icons/calendar-for-input.svg"}
-								alt={"Дата до"}
-							/>
-							<input
+							<DatePicker
+								format="MM/dd/yyyy"
 								className={
-									"pl-[40px] text-center w-full border border-black/10 bg-white/80 rounded-lg text-sm px-4 py-1 placeholder:text-black/20 text-black-100"
+									"text-center w-full border border-black/10 bg-white/80 rounded-lg text-sm placeholder:text-black/20 text-black-100"
 								}
 								placeholder={"Дата до"}
 							/>
