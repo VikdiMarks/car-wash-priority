@@ -1,5 +1,5 @@
-import {axiosInstance} from "@/app/utils/axios-instance";
-import {readCookie} from "@/app/utils/cookie";
+import { axiosInstance } from "@/app/utils/axios-instance";
+import { readCookie } from "@/app/utils/cookie";
 
 export async function addDrivers(data) {
 	const res = await axiosInstance.post(`/api/v2/organizations/${readCookie("organization_id")}/users`, data);
@@ -15,7 +15,22 @@ export async function addDrivers(data) {
 		console.log("Неудачное заполнение данных:", error);
 		return false;
 	}
+}
 
+export async function deleteDriver(userId) {
+	const res = await axiosInstance.delete(`/api/v2/organizations/${readCookie("organization_id")}/users/${userId}`);
+
+	try {
+		if (res.status === 200) {
+			return true;
+		} else {
+			console.log("Неудачное удаление пользователя:", res.status);
+			return false;
+		}
+	} catch (error) {
+		console.log("Неудачное удаление пользователя:", error);
+		return false;
+	}
 }
 
 export async function getDrivers() {
@@ -32,5 +47,4 @@ export async function getDrivers() {
 		console.log("Неудачное заполнение данных:", error);
 		return [];
 	}
-
 }

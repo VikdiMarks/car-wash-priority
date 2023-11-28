@@ -51,54 +51,56 @@ function PlatformLayout({ children }) {
 
 	return (
 		<>
-			<div className={"flex w-screen min-h-screen bg-white md:flex-col"}>
+			<div className={"flex w-screen min-h-screen max-h-screen bg-white md:flex-col md:max-h-full"}>
 				<aside
 					className={
-						"md:w-full md:border-none overflow-hidden w-[212px] min-w-[160px] p-4 pt-6 lg:p-2 border-r border-solid border-black/10"
+						"md:w-full md:border-none overflow-hidden w-[252px] min-w-[160px] p-4 pt-6 lg:p-2 border-r border-solid border-black/10 flex flex-col justify-between gap-[10px]"
 					}>
-					<div
-						className={
-							"md:py-4 text-center text-white text-sm font-semibold w-full py-2.5 px-2 bg-green--main rounded-2xl"
-						}>
-						<p>ООО</p>
-						<p>«{organizationInfo?.name}»</p>
-					</div>
-					<div className="bg-[#E5ECF6] py-[22px] px-6 w-full mt-4 rounded-2xl text-black-100 font-semibold">
-						<div className="text-sm flex justify-between items-center">
-							<p>Баланс</p>
-							<Image width={24} height={24} src={"/img/icons/currency-rub.svg"} alt={"Знак рубля"} />
+					<div>
+						<div
+							className={
+								"md:py-4 text-center text-white text-sm font-semibold w-full py-2.5 px-2 bg-green--main rounded-2xl"
+							}>
+							<p>ООО</p>
+							<p>«{organizationInfo?.name}»</p>
 						</div>
-						<p className={"text-2xl mt-2 mb-6"}>{organizationInfo?.balance}</p>
-						<Button type={"success-secondary"} clickHandler={() => setShowModalRefill(true)}>
-							Пополнить
-						</Button>
+						<div className="bg-[#E5ECF6] py-[22px] px-6 w-full mt-4 rounded-2xl text-black-100 font-semibold">
+							<div className="text-sm flex justify-between items-center">
+								<p>Баланс</p>
+								<Image width={24} height={24} src={"/img/icons/currency-rub.svg"} alt={"Знак рубля"} />
+							</div>
+							<p className={"text-2xl mt-2 mb-6"}>{organizationInfo?.balance}</p>
+							<Button type={"success-secondary"} clickHandler={() => setShowModalRefill(true)}>
+								Пополнить
+							</Button>
+						</div>
 					</div>
-					<div className="flex flex-col gap-1 mt-36 mb-44 md:mb-1 md:mt-4 md:items-center">
+					<div className="flex flex-col gap-1 md:mb-1 md:mt-4 md:items-center">
 						<MenuItem text={"Главная"} icon={"statistic"} path={"/home"} />
 						<MenuItem text={"Водители"} icon={"car"} path={"/drivers"} />
 						<MenuItem text={"История"} icon={"box"} path={"/history"} />
 						<MenuItem text={"Счета и акты"} icon={"document"} path={"/bills-and-acts"} />
-					</div>
-					<MenuItem text={"Настройки"} icon={"passport"} path={"/settings"} />
-					<div className={"mt-3"}>
-						<Button
-							type={"danger-secondary"}
-							clickHandler={() => {
-								document.cookie = "bearer_token=;";
-								router.push("/auth");
-							}}>
-							Выйти
-						</Button>
+						<MenuItem text={"Настройки"} icon={"passport"} path={"/settings"} />
+						<div className={"mt-3 w-full"}>
+							<Button
+								type={"danger-secondary"}
+								clickHandler={() => {
+									document.cookie = "bearer_token=;";
+									router.push("/auth");
+								}}>
+								Выйти
+							</Button>
+						</div>
 					</div>
 					{windowWidth > 768 && (
-						<div className={"relative mt-6 flex-middle flex-col"}>
+						<div className={"relative flex-middle flex-col"}>
 							<div className={"absolute top-0 h-[1px] left-[-16px] right-[-16px] bg-black/10"} />
 							<Image className={"my-4"} width={36} height={42} src={"/img/logo.svg"} alt={"Логотип"} />
 							<p className={"text-black/40 text-center"}>© Car Wash Priority 2023</p>
 						</div>
 					)}
 				</aside>
-				<div className={"grow p-6 pb-4 lg:p-3 flex flex-col"}>
+				<div className={"grow p-6 pb-4 lg:p-3 flex flex-col overflow-y-auto"}>
 					<div className={"grow"}>{children}</div>
 					{windowWidth > 768 && (
 						<div className="flex gap-12 text-black/40 mt-12 lg:flex-col lg:gap-3 lg:items-center">

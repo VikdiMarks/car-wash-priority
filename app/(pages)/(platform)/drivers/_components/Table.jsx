@@ -10,8 +10,9 @@ import Button from "@/app/_components/Button";
 import ModalWindow from "@/app/_components/ModalWindow";
 import { useEffect, useState } from "react";
 import Item from "@/app/(pages)/(platform)/drivers/_components/Item";
+import { deleteDriver } from "@/app/(pages)/(platform)/drivers/drivers";
 
-export default function Table({ drivers }) {
+export default function Table({ drivers = [], updateDrivers }) {
 	const [popups, setPopups] = useState({
 		editDriver: false,
 		deleteDriver: false,
@@ -21,10 +22,17 @@ export default function Table({ drivers }) {
 		telephone: "79204711666",
 		password: "",
 	});
+	const [editDriverId, setEditDriverId] = useState(null);
 
 	useEffect(() => {
 		setPopupEditDriverData({ ...popupEditDriverData, password: randomstring.generate(9) });
 	}, []);
+
+	const handleDeleteUser = async () => {
+		const res = await deleteDriver(editDriverId);
+
+		await updateDrivers();
+	};
 
 	return (
 		<>
@@ -46,8 +54,14 @@ export default function Table({ drivers }) {
 						phone={driver.phone}
 						balance={driver.data.balance}
 						races={driver.races}
-						deleteDriver={() => setPopups({ ...popups, deleteDriver: true })}
-						editDriver={() => setPopups({ ...popups, editDriver: true })}
+						deleteDriver={() => {
+							setPopups({ ...popups, deleteDriver: true });
+							setEditDriverId(driver.id);
+						}}
+						editDriver={() => {
+							setPopups({ ...popups, editDriver: true });
+							setEditDriverId(driver.id);
+						}}
 						key={driver.phone}
 					/>
 				))}
@@ -87,7 +101,12 @@ export default function Table({ drivers }) {
 				<div className={"flex-middle flex-col gap-3"}>Вы уверены, что хотите удалить аккаунт:</div>
 				<div className={"flex-middle text-lg text-black-100 font-semibold"}>+7 (920) 471 - 16 - 66</div>
 				<div className={"w-[388px] md:w-full gap-4 flex flex-col"}>
-					<Button type={"danger"} clickHandler={() => setPopups({ ...popups, deleteDriver: false })}>
+					<Button
+						type={"danger"}
+						clickHandler={async () => {
+							setPopups({ ...popups, deleteDriver: false });
+							await handleDeleteUser();
+						}}>
 						Удалить
 					</Button>
 					<Button type={"secondary"} clickHandler={() => setPopups({ ...popups, deleteDriver: false })}>

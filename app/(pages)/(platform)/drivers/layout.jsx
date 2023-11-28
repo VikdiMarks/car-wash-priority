@@ -29,23 +29,26 @@ export default function DriversLayout({ children }) {
 	const [drivers, setDrivers] = useState([]);
 
 	useEffect(() => {
-		setIsHaveContent(window.location.href.split("#")[1] === "fill");
 		setPopupNewDriverData({ ...popupNewDriverData, password: randomstring.generate(9) });
 
 		async function fetchData() {
 			const drivers = await getDrivers();
 
 			setDrivers(drivers);
+			setIsHaveContent(!!drivers);
 		}
 
 		fetchData();
 	}, []);
 
+	const updateDrivers = async () => {
+		const drivers = await getDrivers();
+		setDrivers(drivers);
+	};
+
 	const handleAddDrivers = async () => {
 		const status = await addDrivers(popupNewDriverData);
-		const drivers = await getDrivers();
-
-		setDrivers(drivers);
+		await updateDrivers();
 
 		setPopups({ ...popups, addDriver: false });
 	};
@@ -89,10 +92,8 @@ export default function DriversLayout({ children }) {
 						<p className={"font-semibold text-sm text-green--main"}>Добавить водителя</p>
 					</div>
 				</div>
-				<Table drivers={drivers} />
-				{isHaveContent ? (
-					children
-				) : (
+				<Table drivers={drivers} updateDrivers={updateDrivers} />
+				{!isHaveContent && (
 					<div className={"h-full flex-middle"}>
 						<ZeroContent text={"Тут будет отображаться список водителей и баланс их счетов"} />
 					</div>
