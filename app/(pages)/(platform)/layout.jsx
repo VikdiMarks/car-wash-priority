@@ -85,7 +85,9 @@ function PlatformLayout({ children }) {
 							<Button
 								type={"danger-secondary"}
 								clickHandler={() => {
-									document.cookie = "bearer_token=;";
+									document.cookie = "bearer_token=; expires=-1;";
+									document.cookie = "phone=; expires=-1;";
+									document.cookie = "organization_id=; expires=-1;";
 									router.push("/auth");
 								}}>
 								Выйти

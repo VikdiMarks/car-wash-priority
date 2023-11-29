@@ -1,11 +1,7 @@
-export default function readCookie(name) {
+export function readCookie(name) {
 	const matches = document.cookie.match(
-		new RegExp(
-			"(?:^|; )" +
-				name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, "\\$1") +
-				"=([^;]*)",
-		),
+		new RegExp("(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, "\\$1") + "=([^;]*)"),
 	);
-    console.log({'operation': 'readCookie', matches, name})
+	console.log({ operation: "readCookie", matches, name });
 	return matches ? decodeURIComponent(matches[1]) : undefined;
 }

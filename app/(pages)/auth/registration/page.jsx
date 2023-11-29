@@ -74,6 +74,7 @@ export default function Registration() {
 			status && setStep(2);
 
 			const orgData = await getOrganizationData();
+			console.log("orgData", orgData);
 
 			if (orgData) {
 				setOrganizationData({

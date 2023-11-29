@@ -2,17 +2,17 @@
 
 import Footer from "@/app/(pages)/auth/_components/Footer";
 import Image from "next/image";
-import {useRef, useState} from "react";
+import { useRef, useState } from "react";
 import clsx from "clsx";
-import {CSSTransition, SwitchTransition, Transition} from "react-transition-group";
+import { CSSTransition, SwitchTransition, Transition } from "react-transition-group";
 import Button from "@/app/_components/Button";
-import {useRouter} from "next/navigation";
+import { useRouter } from "next/navigation";
 import Input from "@/app/_components/Input";
 import axios from "axios";
 import ModalWindow from "@/app/_components/ModalWindow";
 import Verify from "@/app/(pages)/auth/_components/Verify";
-import {sendAuthCode} from "@/app/(pages)/auth/auth";
-import {reg} from "./reg";
+import { sendAuthCode } from "@/app/(pages)/auth/auth";
+import { reg } from "./reg";
 import InputMask from "react-input-mask";
 
 export default function Auth() {
@@ -57,20 +57,10 @@ export default function Auth() {
 	};
 
 	const checkField = (key, value, minLength) => {
-		if (key === "inn") {
-			if (value.trim().length === 8 || value.trim().length === 10 || value.trim().length === 12) {
-				setValidateFields({...validateFields, [key]: true});
-				return;
-			} else {
-				setValidateFields({...validateFields, [key]: true});
-				return;
-			}
-		}
-
 		if (value.trim().length < minLength) {
-			setValidateFields({...validateFields, [key]: false});
+			setValidateFields({ ...validateFields, [key]: false });
 		} else {
-			setValidateFields({...validateFields, [key]: true});
+			setValidateFields({ ...validateFields, [key]: true });
 		}
 	};
 
@@ -137,8 +127,8 @@ export default function Auth() {
 						<Input
 							value={loginData.phone}
 							setValue={text => {
-								setLoginData({phone: text.replace(/[\s-()+]/g, "")});
-								setRegistrationData({...registrationData, phone: text.replace(/[\s-()+]/g, "")});
+								setLoginData({ phone: text.replace(/[\s-()+]/g, "") });
+								setRegistrationData({ ...registrationData, phone: text.replace(/[\s-()+]/g, "") });
 								checkField("phone", text, 11);
 							}}
 							placeholder={"+7 (___) ___-__-__"}
@@ -146,17 +136,21 @@ export default function Auth() {
 							type={"mask-input"}
 							getOnlyNumber
 						/>
-						{!isLogin && <Input placeholder={"ИНН организации"} getOnlyNumber
-											setValue={text => {
-												setRegistrationData({...registrationData, inn: text});
-												checkField("inn", text, 12);
-											}}
-											mask={"999999999999"}
-											type={"mask-input"}
-						/>}
+						{!isLogin && (
+							<Input
+								placeholder={"ИНН организации"}
+								getOnlyNumber
+								setValue={text => {
+									setRegistrationData({ ...registrationData, inn: text });
+									checkField("inn", text, 8);
+								}}
+							/>
+						)}
 					</div>
-					<Button type={"success"} clickHandler={isLogin ? handleAuth : handleReg}
-							disabled={isLogin ? !validateFields.phone : !(validateFields.phone && validateFields.inn)}>
+					<Button
+						type={"success"}
+						clickHandler={isLogin ? handleAuth : handleReg}
+						disabled={isLogin ? !validateFields.phone : !(validateFields.phone && validateFields.inn)}>
 						<SwitchTransition>
 							<CSSTransition
 								key={isLogin}
@@ -182,7 +176,7 @@ export default function Auth() {
 				</div>
 			</div>
 			<Footer textColor={"white"} />
-			<ModalWindow trigger={modalVerify} setTrigger={(arg) => setModalVerify(arg)}>
+			<ModalWindow trigger={modalVerify} setTrigger={arg => setModalVerify(arg)}>
 				<span></span>
 				<Verify phone={loginData.phone} closeModal={() => setModalVerify(false)} />
 			</ModalWindow>
