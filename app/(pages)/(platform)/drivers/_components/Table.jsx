@@ -1,11 +1,9 @@
 "use client";
 
 import clsx from "clsx";
-import Image from "next/image";
 import Checkbox from "@/app/_components/Checkbox";
 import Input from "@/app/_components/Input";
 import randomstring from "randomstring";
-import toast from "react-hot-toast";
 import Button from "@/app/_components/Button";
 import ModalWindow from "@/app/_components/ModalWindow";
 import { useEffect, useState } from "react";
@@ -33,6 +31,20 @@ export default function Table({ drivers = [], updateDrivers }) {
 
 		await updateDrivers();
 	};
+
+	function formatPhoneNumber(number) {
+		const cleanNumber = number.replace(/\D/g, "");
+
+		if (cleanNumber.length !== 11) {
+			console.error("Incorrect phone number format");
+			return number;
+		}
+
+		return `+${cleanNumber.slice(0, 1)} (${cleanNumber.slice(1, 4)}) ${cleanNumber.slice(4, 7)}-${cleanNumber.slice(
+			7,
+			9,
+		)}-${cleanNumber.slice(9)}`;
+	}
 
 	return (
 		<>
@@ -79,7 +91,9 @@ export default function Table({ drivers = [], updateDrivers }) {
 				</div>
 				<Input
 					label={"Номер телефона"}
-					value={popupEditDriverData.telephone}
+					value={drivers.map(driver => {
+						if (driver.id === editDriverId) return driver.phone;
+					})}
 					setValue={text =>
 						setPopupEditDriverData({ ...popupEditDriverData, phone: text.replace(/[\s-()+]/g, "") })
 					}
@@ -99,7 +113,12 @@ export default function Table({ drivers = [], updateDrivers }) {
 				setTrigger={arg => setPopups({ ...popups, deleteDriver: arg })}
 				title={"Удаление аккаунта"}>
 				<div className={"flex-middle flex-col gap-3"}>Вы уверены, что хотите удалить аккаунт:</div>
-				<div className={"flex-middle text-lg text-black-100 font-semibold"}>+7 (920) 471 - 16 - 66</div>
+				<div className={"flex-middle text-lg text-black-100 font-semibold"}>
+					{drivers.map(driver => {
+						if (driver.id === editDriverId)
+							return <span key={driver.id}>{formatPhoneNumber(driver.phone)}</span>;
+					})}
+				</div>
 				<div className={"w-[388px] md:w-full gap-4 flex flex-col"}>
 					<Button
 						type={"danger"}

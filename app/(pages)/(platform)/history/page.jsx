@@ -14,7 +14,6 @@ export default function History() {
 	const [isHaveContent, setIsHaveContent] = useState(null);
 
 	useEffect(() => {
-		console.log("history");
 		const fetchData = async () => {
 			try {
 				const data = await getHistory();

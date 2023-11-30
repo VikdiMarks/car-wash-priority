@@ -10,7 +10,13 @@ import randomstring from "randomstring";
 import toast from "react-hot-toast";
 import Table from "@/app/(pages)/(platform)/drivers/_components/Table";
 import driversData from "@/app/(pages)/(platform)/drivers/_components/drivers";
-import { addDrivers, getDrivers } from "@/app/(pages)/(platform)/drivers/drivers";
+import {
+	addDrivers,
+	getDrivers,
+	setDayAutoBalance,
+	setDayAutoBalanceReq,
+} from "@/app/(pages)/(platform)/drivers/drivers";
+import { getOrganizationData } from "@/app/(pages)/(platform)/platform";
 
 export default function DriversLayout({ children }) {
 	const [isHaveContent, setIsHaveContent] = useState(false);
@@ -27,6 +33,7 @@ export default function DriversLayout({ children }) {
 		role: 0,
 	});
 	const [drivers, setDrivers] = useState([]);
+	const [dayAutoBalance, setDayAutoBalance] = useState(0);
 
 	useEffect(() => {
 		setPopupNewDriverData({ ...popupNewDriverData, password: randomstring.generate(9) });
@@ -53,6 +60,20 @@ export default function DriversLayout({ children }) {
 		setPopups({ ...popups, addDriver: false });
 	};
 
+	useEffect(() => {
+		const fetchData = async () => {
+			try {
+				const data = await getOrganizationData();
+				console.log("data", data);
+				setDayAutoBalance(data?.day_auto_balance);
+			} catch (error) {
+				console.error("Ошибка при получении данных об организации", error);
+			}
+		};
+
+		fetchData();
+	}, []);
+
 	return (
 		<>
 			<section className={"h-full"}>
@@ -67,6 +88,28 @@ export default function DriversLayout({ children }) {
 										"max-w-[140px] px-4 py-2 rounded-lg bg-white border border-black/10 font-semibold text-lg"
 									}
 									type={"number"}
+									value={dayAutoBalance}
+									onChange={e => {
+										setDayAutoBalance(e.target.value);
+									}}
+									onBlur={() => {
+										const fetchData = async () => {
+											try {
+												const res = await setDayAutoBalanceReq({
+													day_auto_balance: dayAutoBalance,
+												});
+												if (res) {
+													const data = await getOrganizationData();
+
+													setDayAutoBalance(data?.day_auto_balance);
+												}
+											} catch (error) {
+												console.error("Ошибка при получении данных об организации", error);
+											}
+										};
+
+										fetchData();
+									}}
 								/>
 							</div>
 							<div className={"flex gap-1 items-start p-4 bg-[rgba(229,236,246,0.50)] rounded-lg"}>

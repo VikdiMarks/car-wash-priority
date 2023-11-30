@@ -6,6 +6,7 @@ import Image from "next/image";
 import Bills from "@/app/(pages)/(platform)/bills-and-acts/_components/Bills";
 import Acts from "@/app/(pages)/(platform)/bills-and-acts/_components/Acts";
 import { getActs, getInvoices, getInvoicesFile } from "@/app/(pages)/(platform)/bills-and-acts/api";
+import { DatePicker } from "rsuite";
 
 export default function BillsAndActs() {
 	const [subpage, setSubpage] = useState("счета");
@@ -95,6 +96,27 @@ export default function BillsAndActs() {
 						src={"/img/icons/arrow-range.svg"}
 						alt={"Тип операции"}
 					/>
+				</div>
+				<div className="flex items-center gap-2 md:w-full md:flex-col w-full">
+					<div className={"relative max-w-[166px] md:w-full md:max-w-full"}>
+						<DatePicker
+							format="MM/dd/yyyy"
+							className={
+								"text-center w-full border border-black/10 bg-white/80 rounded-lg text-sm placeholder:text-black/20 text-black-100"
+							}
+							placeholder={"Дата от"}
+						/>
+					</div>
+					<div className={"w-1 h-[1px] bg-black md:hidden"} />
+					<div className={"relative max-w-[166px] md:w-full md:max-w-full"}>
+						<DatePicker
+							format="MM/dd/yyyy"
+							className={
+								"text-center w-full border border-black/10 bg-white/80 rounded-lg text-sm placeholder:text-black/20 text-black-100"
+							}
+							placeholder={"Дата до"}
+						/>
+					</div>
 				</div>
 			</div>
 			{subpage === "счета" ? <Bills data={isBillsContent} /> : <Acts data={isActsContent} />}

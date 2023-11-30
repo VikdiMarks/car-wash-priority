@@ -17,13 +17,13 @@ export default function Table({ data = { models: [] } }) {
 				<div className={"flex w-full border-b border-[#cccccc]"}>
 					{["Номер операции", "Источник", "Тип операции", "Сумма", "Место посещения", "Дата и время"].map(
 						(heading, index) => (
-							<h6
-								className={clsx("basis-1/6 text-black/40 py-3 lg:flex-middle lg:text-center", {
-									"px-4 border-l-black-low-opacity-gradient": index !== 0,
-								})}
+							<p
+								className={
+									"basis-1/6 text-black/40 py-3 lg:flex-middle lg:text-center px-4 border-l-black-low-opacity-gradient"
+								}
 								key={index}>
 								{heading}
-							</h6>
+							</p>
 						),
 					)}
 				</div>
