@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 
-export default function Item({phone, balance, races, deleteDriver, editDriver}) {
+export default function Item({ phone, balance, races, deleteDriver, editDriver }) {
 	return (
 		<div className={"flex w-full text-black-100"}>
 			<div className="flex basis-1/4 items-center px-4 lg:px-1 py-2">{phone}</div>
@@ -24,15 +24,7 @@ export default function Item({phone, balance, races, deleteDriver, editDriver}) 
 					alt={"Удалить"}
 					onClick={deleteDriver}
 				/>
-				<Image
-					className={"cursor-pointer duration-300 hover:scale-125"}
-					width={20}
-					height={20}
-					src={"/img/icons/pencil.svg"}
-					alt={"Редактировать"}
-					onClick={editDriver}
-				/>
 			</div>
 		</div>
-	)
+	);
 }
