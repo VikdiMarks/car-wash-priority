@@ -131,7 +131,7 @@ export default function DriversLayout({ children }) {
 						className={
 							"flex-middle gap-2 p-4 rounded-2xl border border-dashed border-green--main bg-[rgba(38,173,96,0.10)] cursor-pointer mt-4 duration-300 hover:bg-[rgba(38,173,96,0.2)]"
 						}>
-						<Image width={30} height={30} src={"/img/icons/plus.svg"} alt={"Добавление водителя"} />
+						<Image width={30} height={30} src={"/img/icons/plus-green.svg"} alt={"Добавление водителя"} />
 						<p className={"font-semibold text-sm text-green--main"}>Добавить водителя</p>
 					</div>
 				</div>
