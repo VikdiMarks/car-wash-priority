@@ -67,3 +67,22 @@ export async function setDayAutoBalanceReq(data) {
 		return false;
 	}
 }
+
+export async function setBalance(data, userId) {
+	const res = await axiosInstance.post(
+		`/api/v2/organizations/${readCookie("organization_id")}/users/${userId}/set-balance`,
+		data,
+	);
+
+	try {
+		if (res.status === 200) {
+			return true;
+		} else {
+			console.log("Неудачное заполнение данных:", res.status);
+			return false;
+		}
+	} catch (error) {
+		console.log("Неудачное заполнение данных:", error);
+		return false;
+	}
+}

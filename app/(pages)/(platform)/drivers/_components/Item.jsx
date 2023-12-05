@@ -4,7 +4,7 @@ import Image from "next/image";
 import clsx from "clsx";
 import { useState } from "react";
 
-export default function Item({ phone, balance, races, deleteDriver, editDriver }) {
+export default function Item({ phone, balance, races, deleteDriver, editDriver, changeBalanceUser, id }) {
 	const [balanceDriver, setBalanceDriver] = useState(balance);
 
 	return (
@@ -17,7 +17,13 @@ export default function Item({ phone, balance, races, deleteDriver, editDriver }
 						{ "text-green--main": balanceDriver > 50, "text-red-600": balanceDriver < 50 },
 					)}
 					defaultValue={balanceDriver}
-					onChange={e => setBalanceDriver(e.target.value)}
+					onChange={e => {
+						setBalanceDriver(e.target.value);
+						changeBalanceUser({
+							balance: parseFloat(e.target.value),
+							id: id,
+						});
+					}}
 				/>
 			</div>
 			<div className="flex-middle basis-1/4 px-4 lg:px-1 py-2">{races}</div>

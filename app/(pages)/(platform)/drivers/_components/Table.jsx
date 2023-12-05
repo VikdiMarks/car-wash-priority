@@ -8,7 +8,8 @@ import Button from "@/app/_components/Button";
 import ModalWindow from "@/app/_components/ModalWindow";
 import { useEffect, useState } from "react";
 import Item from "@/app/(pages)/(platform)/drivers/_components/Item";
-import { deleteDriver } from "@/app/(pages)/(platform)/drivers/drivers";
+import { deleteDriver, setBalance } from "@/app/(pages)/(platform)/drivers/drivers";
+import { getOrganizationData } from "@/app/(pages)/(platform)/platform";
 
 export default function Table({ drivers = [], updateDrivers }) {
 	const [popups, setPopups] = useState({
@@ -21,10 +22,30 @@ export default function Table({ drivers = [], updateDrivers }) {
 		password: "",
 	});
 	const [editDriverId, setEditDriverId] = useState(null);
+	const [balanceUser, setBalanceUser] = useState({
+		balance: null,
+		id: null,
+	});
 
 	useEffect(() => {
 		setPopupEditDriverData({ ...popupEditDriverData, password: randomstring.generate(9) });
 	}, []);
+
+	useEffect(() => {
+		const fetchData = async () => {
+			try {
+				const data = await setBalance({ balance: balanceUser.balance }, balanceUser.id);
+
+				if (data) {
+					await updateDrivers();
+				}
+			} catch (error) {
+				console.error("Ошибка при получении данных об организации", error);
+			}
+		};
+
+		fetchData();
+	}, [balanceUser]);
 
 	const handleDeleteUser = async () => {
 		const res = await deleteDriver(editDriverId);
@@ -65,6 +86,7 @@ export default function Table({ drivers = [], updateDrivers }) {
 					<Item
 						phone={driver.phone}
 						balance={driver.data.balance}
+						changeBalanceUser={setBalanceUser}
 						races={driver.races}
 						deleteDriver={() => {
 							setPopups({ ...popups, deleteDriver: true });
@@ -74,6 +96,7 @@ export default function Table({ drivers = [], updateDrivers }) {
 							setPopups({ ...popups, editDriver: true });
 							setEditDriverId(driver.id);
 						}}
+						id={driver.id}
 						key={driver.phone}
 					/>
 				))}
