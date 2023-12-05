@@ -38,6 +38,10 @@ export default function Table({ drivers = [], updateDrivers }) {
 
 				if (data) {
 					await updateDrivers();
+				} else {
+					if (balanceUser.balance !== null) {
+						alert("Ошибка пополнения баланса водителя");
+					}
 				}
 			} catch (error) {
 				console.error("Ошибка при получении данных об организации", error);
