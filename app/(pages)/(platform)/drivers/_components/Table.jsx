@@ -31,26 +31,6 @@ export default function Table({ drivers = [], updateDrivers }) {
 		setPopupEditDriverData({ ...popupEditDriverData, password: randomstring.generate(9) });
 	}, []);
 
-	useEffect(() => {
-		const fetchData = async () => {
-			try {
-				const data = await setBalance({ balance: balanceUser.balance }, balanceUser.id);
-
-				if (data) {
-					await updateDrivers();
-				} else {
-					if (balanceUser.balance !== null) {
-						alert("Ошибка пополнения баланса водителя");
-					}
-				}
-			} catch (error) {
-				console.error("Ошибка при получении данных об организации", error);
-			}
-		};
-
-		fetchData();
-	}, [balanceUser]);
-
 	const handleDeleteUser = async () => {
 		const res = await deleteDriver(editDriverId);
 
@@ -102,6 +82,7 @@ export default function Table({ drivers = [], updateDrivers }) {
 						}}
 						id={driver.id}
 						key={driver.phone}
+						updateDrivers={updateDrivers}
 					/>
 				))}
 			</div>
