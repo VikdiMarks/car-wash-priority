@@ -109,10 +109,8 @@ export default function Settings() {
 						<Button type={"medium-gray"}>Отменить</Button>
 						<Button
 							clickHandler={async () => {
-								console.log("name", name);
-								console.log("email", email);
-								const resName = await editName({ name: name });
-								const resEmail = await editEmail({ email: email });
+								const resName = await editName({ name: contactInfo?.fio });
+								const resEmail = await editEmail({ email: contactInfo?.email });
 
 								if (resName && resEmail) {
 									toast.success("Изменения сохранены");
@@ -128,14 +126,14 @@ export default function Settings() {
 					label={"ФИО"}
 					value={contactInfo?.fio}
 					setValue={value => {
-						setName(value);
+						setContactInfo(prevState => ({ ...prevState, fio: value }));
 					}}
 				/>
 				<Input
 					type={"big-input"}
 					label={"E-mail"}
 					value={contactInfo?.email}
-					setValue={value => setEmail(value)}
+					setValue={value => setContactInfo(prevState => ({ ...prevState, email: value }))}
 				/>
 				<div className={"flex items-center"}>
 					<h1 className={repeatingStyles.title}>Настройки уведомлений</h1>
