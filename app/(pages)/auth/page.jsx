@@ -30,18 +30,33 @@ export default function Auth() {
 		phone: false,
 		inn: false,
 	});
+	const [errorMessage, setErrorMessage] = useState({
+		auth: "",
+		reg: "",
+	});
 
 	const router = useRouter();
 
 	const nodeRef = useRef(null);
 
 	const handleAuth = async () => {
-		const isValid = sendAuthCode(loginData);
+		const isValid = await sendAuthCode(loginData);
 
-		if (isLogin && isValid) {
+		if (isLogin && isValid === true) {
 			setModalVerify(true);
+			setErrorMessage({
+				auth: "",
+				reg: "",
+			});
 		} else {
-			router.push("/auth/registration");
+			if (isValid.response.status === 409) {
+				setErrorMessage(prevState => ({
+					...prevState,
+					auth: "До следующей отправки осталось " + isValid.response.data.message + "с",
+				}));
+				return;
+			}
+			setErrorMessage(prevState => ({ ...prevState, auth: isValid.response.data.message }));
 		}
 	};
 
@@ -51,13 +66,18 @@ export default function Auth() {
 
 		if (!isValid.errors) {
 			router.push("/auth/registration");
+			setErrorMessage({
+				auth: "",
+				reg: "",
+			});
 		} else {
-			alert(isValid.message);
+			setErrorMessage(prevState => ({ ...prevState, reg: isValid.message }));
 		}
 	};
 
 	const checkField = (key, value, minLength) => {
 		if (value.trim().length < minLength) {
+			setErrorMessage(prevState => ({ ...prevState, reg: "Поле инн имеет ошибочный формат" }));
 			setValidateFields({ ...validateFields, [key]: false });
 		} else {
 			setValidateFields({ ...validateFields, [key]: true });
@@ -77,7 +97,7 @@ export default function Auth() {
 				</div>
 				<div
 					className={
-						"flex flex-col gap-7 max-w-[484px] bg-white rounded-2xl p-12 max-[530px]:p-8 max-[430px]:p-4"
+						"flex flex-col gap-7 max-w-[484px] bg-white rounded-2xl p-12 max-[530px]:p-8 max-[430px]:p-4 md:fixed md:rounded-none top-0 left-0 right-0 bottom-0"
 					}>
 					<div className={"flex flex-col gap-2 items-center"}>
 						<Image width={56} height={70} src={"/img/logo.svg"} alt={"Логотип"} />
@@ -147,6 +167,7 @@ export default function Auth() {
 							/>
 						)}
 					</div>
+					<span className="text-red-500 text-sm">{isLogin ? errorMessage.auth : errorMessage.reg}</span>
 					<Button
 						type={"success"}
 						clickHandler={isLogin ? handleAuth : handleReg}
@@ -166,7 +187,7 @@ export default function Auth() {
 					<p className={"text-sm text-black/40 text-center max-[430px]:text-[12px]"}>
 						Продолжая использовать сервис, вы соглашаетесь с{" "}
 						<a className={"text-purple--main"} href="#">
-							политикой конфиденциальности
+							правилами обработки персональных данных
 						</a>{" "}
 						и{" "}
 						<a className={"text-purple--main"} href="#">

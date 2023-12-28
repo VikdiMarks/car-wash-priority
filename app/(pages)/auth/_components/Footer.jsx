@@ -4,16 +4,15 @@ export default function Footer({ textColor }) {
 	return (
 		<footer
 			className={clsx(
-				"px-10 pb-3 flex items-center justify-between absolute bottom-0 left-0 right-0",
+				"px-10 pb-3 flex md:flex-col-reverse items-center justify-between absolute md:static md:py-8 bottom-0 left-0 right-0",
 				{
 					"text-white": textColor === "white",
 					"text-black/40": textColor === "black",
 				},
-				"max-[800px]:flex-col-reverse max-[800px]:gap-4"
-			)}
-		>
+				"max-[800px]:flex-col-reverse max-[800px]:gap-4",
+			)}>
 			<p>© Car Wash Priority 2023</p>
-			<div className="flex items-center gap-12 max-[800px]:flex-col max-[800px]:gap-2">
+			<div className="flex md:flex-col items-center gap-12 max-[800px]:flex-col max-[800px]:gap-2">
 				<a className={"hover:opacity-75"} href="#">
 					Поддержка
 				</a>
