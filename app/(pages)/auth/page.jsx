@@ -14,6 +14,7 @@ import Verify from "@/app/(pages)/auth/_components/Verify";
 import { sendAuthCode } from "@/app/(pages)/auth/auth";
 import { reg } from "./reg";
 import InputMask from "react-input-mask";
+import Link from "next/link";
 
 export default function Auth() {
 	const [isLogin, setIsLogin] = useState(true);
@@ -168,10 +169,7 @@ export default function Auth() {
 						)}
 					</div>
 					<span className="text-red-500 text-sm">{isLogin ? errorMessage.auth : errorMessage.reg}</span>
-					<Button
-						type={"success"}
-						clickHandler={isLogin ? handleAuth : handleReg}
-						disabled={isLogin ? !validateFields.phone : !(validateFields.phone && validateFields.inn)}>
+					<Button type={"success"} clickHandler={isLogin ? handleAuth : handleReg}>
 						<SwitchTransition>
 							<CSSTransition
 								key={isLogin}
@@ -186,9 +184,9 @@ export default function Auth() {
 					</Button>
 					<p className={"text-sm text-black/40 text-center max-[430px]:text-[12px]"}>
 						Продолжая использовать сервис, вы соглашаетесь с{" "}
-						<a className={"text-purple--main"} href="#">
+						<Link className={"text-purple--main"} href="/personal-data-processing">
 							правилами обработки персональных данных
-						</a>{" "}
+						</Link>{" "}
 						и{" "}
 						<a className={"text-purple--main"} href="#">
 							правилами предоставления услуг
@@ -197,7 +195,7 @@ export default function Auth() {
 				</div>
 			</div>
 			<Footer textColor={"white"} />
-			<ModalWindow trigger={modalVerify} setTrigger={arg => setModalVerify(arg)}>
+			<ModalWindow trigger={modalVerify} setTrigger={arg => setModalVerify(arg)} classNameCustom={"md:h-full"}>
 				<span></span>
 				<Verify phone={loginData.phone} closeModal={() => setModalVerify(false)} />
 			</ModalWindow>

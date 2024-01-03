@@ -26,7 +26,7 @@ export async function verifyTel(data) {
 	try {
 		const res = await axios.post(`${process.env.host}/api/v2/organizations/registration/auth`, data);
 
-		document.cookie = "bearer_token=; expires=-1;";
+		document.cookie = "bearer_token=;expires=Thu, 01 Jan 1970 00:00:00 GMT;";
 
 		if (res.status === 200) {
 			const tokenExpiryTime = new Date(res.data.auth.expires_at).getTime();

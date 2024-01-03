@@ -72,9 +72,9 @@ export default function Registration() {
 
 		if (status) {
 			status && setStep(2);
+			setInvalidFields({});
 
 			const orgData = await getOrganizationData();
-			console.log("orgData", orgData);
 
 			if (orgData) {
 				setOrganizationData({
@@ -93,6 +93,7 @@ export default function Registration() {
 
 		if (data === true) {
 			setStep(3);
+			setInvalidFields({});
 		} else {
 			setInvalidFields(data);
 		}
@@ -103,6 +104,7 @@ export default function Registration() {
 
 		if (data === true) {
 			setStep(4);
+			setInvalidFields({});
 		} else {
 			setInvalidFields(data);
 		}
@@ -113,6 +115,7 @@ export default function Registration() {
 
 		if (data === true) {
 			setStep(5);
+			setInvalidFields({});
 		} else {
 			setInvalidFields(data);
 		}
@@ -137,6 +140,7 @@ export default function Registration() {
 			if (res?.sum) {
 				setCalcSum(res.sum);
 				setStep(6);
+				setInvalidFields({});
 			}
 		}
 	};

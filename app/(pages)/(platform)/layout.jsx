@@ -12,6 +12,7 @@ import ModalWindow from "@/app/_components/ModalWindow";
 import Input from "@/app/_components/Input";
 import { createInvoices, getOrganizationData } from "@/app/(pages)/(platform)/platform";
 import withAuth from "@/app/utils/withAuth";
+import Footer from "@/app/(pages)/auth/_components/Footer";
 
 function PlatformLayout({ children }) {
 	const pathname = usePathname();
@@ -49,57 +50,120 @@ function PlatformLayout({ children }) {
 
 	const [showModalRefill, setShowModalRefill] = useState(false);
 
+	const [menuOpen, setMenuOpen] = useState(false);
+
 	return (
 		<>
-			<div className={"flex w-screen min-h-screen max-h-screen bg-white md:flex-col md:max-h-full"}>
+			<div
+				className={clsx(
+					"flex w-screen min-h-screen max-h-screen bg-white md:flex-col md:max-h-full md:items-center",
+				)}>
+				<header
+					className={clsx("w-full hidden justify-between items-center p-4 md:flex", {
+						"fixed z-50 top-0 left-0 right-0": menuOpen,
+						"relative z-50": !menuOpen,
+					})}>
+					<button
+						className="w-[35px] h-[30px] relative focus:outline-none p-2.5 bg-zinc-100 rounded"
+						onClick={() => setMenuOpen(!menuOpen)}>
+						<div className="block w-5 absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
+							<span
+								className={clsx(
+									"block absolute h-[2px] w-5 bg-black bg-current transform transition duration-500 ease-in-out rounded",
+									{ "rotate-45": menuOpen, "-translate-y-1.5": !menuOpen },
+								)}></span>
+							<span
+								className={clsx(
+									"block absolute h-[2px] w-5 bg-black transform transition duration-500 ease-in-out rounded",
+									{ "opacity-0": menuOpen },
+								)}></span>
+							<span
+								className={clsx(
+									"block absolute h-[2px] w-5 bg-black transform  transition duration-500 ease-in-out rounded",
+									{ "-rotate-45": menuOpen, " translate-y-1.5": !menuOpen },
+								)}></span>
+						</div>
+					</button>
+					<Image width={"34"} height={"42"} src={"/img/logo.svg"} alt={"Лого"} />
+					<div className={"flex flex-col gap-1 items-center"}>
+						<span className={"block opacity-60 text-zinc-900 text-[10px] font-semibold leading-tight"}>
+							Баланс
+						</span>
+						<div className={"flex items-center"}>
+							<span className={"text-zinc-900 text-2xl font-semibold leading-9"}>
+								{organizationInfo?.balance}
+							</span>
+							<Image width={24} height={24} src={"/img/icons/currency-rub.svg"} alt={"Знак рубля"} />
+						</div>
+					</div>
+				</header>
 				<aside
-					className={
-						"md:w-full md:border-none overflow-hidden w-[252px] min-w-[160px] p-4 pt-6 lg:p-2 border-r border-solid border-black/10 flex flex-col justify-between gap-[10px]"
-					}>
-					<div>
-						<div
-							className={
-								"md:py-4 text-center text-white text-sm font-semibold w-full py-2.5 px-2 bg-green--main rounded-2xl"
-							}>
-							<p>«{organizationInfo?.name}»</p>
-						</div>
-						<div className="bg-[#E5ECF6] py-[22px] px-6 w-full mt-4 rounded-2xl text-black-100 font-semibold">
-							<div className="text-sm flex justify-between items-center">
-								<p>Баланс</p>
-								<Image width={24} height={24} src={"/img/icons/currency-rub.svg"} alt={"Знак рубля"} />
+					className={clsx(
+						"md:border-none overflow-hidden w-[252px] min-w-[160px] p-4 pt-6 lg:p-2 border-r border-solid border-black/10 md:w-full md:fixed md:min-h-screen md:max-h-screen top-0 left-0 md:bg-white z-30 md:justify-center transition-all duration-300 md:overflow-y-auto md:pt-28",
+						{ "translate-x-0": menuOpen, "md:-translate-x-full": !menuOpen },
+					)}>
+					<div className={"flex flex-col justify-between gap-[10px]"}>
+						<div className={"md:px-20"}>
+							<div
+								className={
+									"md:py-4 text-center text-white text-sm font-semibold w-full py-2.5 px-2 bg-green--main rounded-2xl"
+								}>
+								<p>«{organizationInfo?.name}»</p>
 							</div>
-							<p className={"text-2xl mt-2 mb-6"}>{organizationInfo?.balance}</p>
-							<Button type={"success-secondary"} clickHandler={() => setShowModalRefill(true)}>
-								Пополнить
-							</Button>
+							<div className="bg-[#E5ECF6] py-[22px] px-6 w-full mt-4 rounded-2xl text-black-100 font-semibold md:hidden">
+								<div className="text-sm flex justify-between items-center">
+									<p>Баланс</p>
+									<Image
+										width={24}
+										height={24}
+										src={"/img/icons/currency-rub.svg"}
+										alt={"Знак рубля"}
+									/>
+								</div>
+								<p className={"text-2xl mt-2 mb-6"}>{organizationInfo?.balance}</p>
+							</div>
+							<div className={"hidden md:block mt-4"}>
+								<Button type={"success-secondary"} clickHandler={() => setShowModalRefill(true)}>
+									Пополнить
+								</Button>
+							</div>
 						</div>
+						<div
+							className="flex flex-col gap-1 md:mb-1 md:mt-4 md:items-center md:px-20"
+							onClick={() => setMenuOpen(false)}>
+							<MenuItem text={"Главная"} icon={"statistic"} path={"/home"} />
+							<MenuItem text={"Водители"} icon={"car"} path={"/drivers"} />
+							<MenuItem text={"История"} icon={"box"} path={"/history"} />
+							<MenuItem text={"Счета и акты"} icon={"document"} path={"/bills-and-acts"} />
+							<MenuItem text={"Настройки"} icon={"passport"} path={"/settings"} />
+							<div className={"mt-3 w-full"}>
+								<Button
+									type={"danger-secondary"}
+									clickHandler={() => {
+										document.cookie = "bearer_token=;expires=Thu, 01 Jan 1970 00:00:00 GMT;";
+										document.cookie = "phone=;expires=Thu, 01 Jan 1970 00:00:00 GMT;";
+										document.cookie = "organization_id=;expires=Thu, 01 Jan 1970 00:00:00 GMT;";
+										router.push("/auth");
+									}}>
+									Выйти
+								</Button>
+							</div>
+						</div>
+						{windowWidth > 768 && (
+							<div className={"relative flex-middle flex-col"}>
+								<div className={"absolute top-0 h-[1px] left-[-16px] right-[-16px] bg-black/10"} />
+								<Image
+									className={"my-4"}
+									width={36}
+									height={42}
+									src={"/img/logo.svg"}
+									alt={"Логотип"}
+								/>
+								<p className={"text-black/40 text-center"}>© Car Wash Priority 2023</p>
+							</div>
+						)}
+						{windowWidth < 768 && <Footer />}
 					</div>
-					<div className="flex flex-col gap-1 md:mb-1 md:mt-4 md:items-center">
-						<MenuItem text={"Главная"} icon={"statistic"} path={"/home"} />
-						<MenuItem text={"Водители"} icon={"car"} path={"/drivers"} />
-						<MenuItem text={"История"} icon={"box"} path={"/history"} />
-						<MenuItem text={"Счета и акты"} icon={"document"} path={"/bills-and-acts"} />
-						<MenuItem text={"Настройки"} icon={"passport"} path={"/settings"} />
-						<div className={"mt-3 w-full"}>
-							<Button
-								type={"danger-secondary"}
-								clickHandler={() => {
-									document.cookie = "bearer_token=; expires=-1;";
-									document.cookie = "phone=; expires=-1;";
-									document.cookie = "organization_id=; expires=-1;";
-									router.push("/auth");
-								}}>
-								Выйти
-							</Button>
-						</div>
-					</div>
-					{windowWidth > 768 && (
-						<div className={"relative flex-middle flex-col"}>
-							<div className={"absolute top-0 h-[1px] left-[-16px] right-[-16px] bg-black/10"} />
-							<Image className={"my-4"} width={36} height={42} src={"/img/logo.svg"} alt={"Логотип"} />
-							<p className={"text-black/40 text-center"}>© Car Wash Priority 2023</p>
-						</div>
-					)}
 				</aside>
 				<div className={"grow p-6 pb-4 lg:p-3 flex flex-col overflow-y-auto"}>
 					<div className={"grow"}>{children}</div>
@@ -111,8 +175,8 @@ function PlatformLayout({ children }) {
 							<a className={"hover:opacity-75"} href="#">
 								Политика конфиденциальности
 							</a>
-							<a className={"hover:opacity-75"} href="#">
-								Правила предоставления услуг
+							<a className={"hover:opacity-75"} href="/personal-data-processing">
+								Правила обработки персональных данных
 							</a>
 						</div>
 					)}
@@ -158,8 +222,8 @@ function PlatformLayout({ children }) {
 							<a className={"hover:opacity-75"} href="#">
 								Политика конфиденциальности
 							</a>
-							<a className={"hover:opacity-75"} href="#">
-								Правила предоставления услуг
+							<a className={"hover:opacity-75"} href="/personal-data-processing">
+								Правила обработки персональных данных
 							</a>
 						</div>
 					</>
