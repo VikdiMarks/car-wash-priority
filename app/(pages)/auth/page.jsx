@@ -42,6 +42,7 @@ export default function Auth() {
 
 	const handleAuth = async () => {
 		const isValid = await sendAuthCode(loginData);
+		console.log("isValid", isValid, isLogin);
 
 		if (isLogin && isValid === true) {
 			setModalVerify(true);
@@ -57,7 +58,11 @@ export default function Auth() {
 				}));
 				return;
 			}
-			setErrorMessage(prevState => ({ ...prevState, auth: isValid.response.data.message }));
+			setErrorMessage(prevState => ({
+				...prevState,
+				auth: isValid.response.data.message,
+				errors: isValid.response.data.errors,
+			}));
 		}
 	};
 
@@ -72,7 +77,11 @@ export default function Auth() {
 				reg: "",
 			});
 		} else {
-			setErrorMessage(prevState => ({ ...prevState, reg: isValid.message }));
+			setErrorMessage(prevState => ({
+				...prevState,
+				reg: isValid.message,
+				errors: isValid.errors,
+			}));
 		}
 	};
 
@@ -106,7 +115,13 @@ export default function Auth() {
 					</div>
 					<div className={"rounded-xl bg-black/5 px-2 py-1"}>
 						<p
-							onClick={() => setIsLogin(true)}
+							onClick={() => {
+								setIsLogin(true);
+								setErrorMessage({
+									auth: "",
+									reg: "",
+								});
+							}}
 							className={clsx(
 								"transition-colors inline-block w-1/2 text-center text-sm py-1 px-2 rounded-lg",
 								{
@@ -118,7 +133,13 @@ export default function Auth() {
 							Вход
 						</p>
 						<p
-							onClick={() => setIsLogin(false)}
+							onClick={() => {
+								setIsLogin(false);
+								setErrorMessage({
+									auth: "",
+									reg: "",
+								});
+							}}
 							className={clsx(
 								"duration-300 inline-block w-1/2 text-center text-sm py-1 px-2 rounded-lg",
 								{
@@ -157,18 +178,21 @@ export default function Auth() {
 							type={"mask-input"}
 							getOnlyNumber
 						/>
+						<span className="text-red-500 text-sm">{errorMessage?.errors?.phone}</span>
 						{!isLogin && (
-							<Input
-								placeholder={"ИНН организации"}
-								getOnlyNumber
-								setValue={text => {
-									setRegistrationData({ ...registrationData, inn: text });
-									checkField("inn", text, 8);
-								}}
-							/>
+							<>
+								<Input
+									placeholder={"ИНН организации"}
+									getOnlyNumber
+									setValue={text => {
+										setRegistrationData({ ...registrationData, inn: text });
+										checkField("inn", text, 8);
+									}}
+								/>
+								<span className="text-red-500 text-sm">{errorMessage?.errors?.inn}</span>
+							</>
 						)}
 					</div>
-					<span className="text-red-500 text-sm">{isLogin ? errorMessage.auth : errorMessage.reg}</span>
 					<Button type={"success"} clickHandler={isLogin ? handleAuth : handleReg}>
 						<SwitchTransition>
 							<CSSTransition
