@@ -42,8 +42,15 @@ export default function Auth() {
 
 	const handleAuth = async () => {
 		const checkPhoneStatus = await checkPhone(loginData);
+		console.log("checkPhoneStatus", checkPhoneStatus);
 
-		if (!checkPhoneStatus) {
+		if (checkPhoneStatus.errors?.phone) {
+			setErrorMessage(prevState => ({
+				...prevState,
+				errors: { phone: checkPhoneStatus.errors.phone },
+			}));
+			return;
+		} else if (!checkPhoneStatus.exists) {
 			setErrorMessage(prevState => ({
 				...prevState,
 				errors: { phone: "Этот номер телефона не зарегистрирован" },
@@ -79,7 +86,13 @@ export default function Auth() {
 	const handleReg = async () => {
 		const checkPhoneStatus = await checkPhone(loginData);
 
-		if (checkPhoneStatus) {
+		if (checkPhoneStatus.errors?.phone) {
+			setErrorMessage(prevState => ({
+				...prevState,
+				errors: { phone: checkPhoneStatus.errors.phone },
+			}));
+			return;
+		} else if (checkPhoneStatus.exists) {
 			setErrorMessage(prevState => ({
 				...prevState,
 				errors: { phone: "Этот номер телефона уже зарегистрирован другим пользователем" },

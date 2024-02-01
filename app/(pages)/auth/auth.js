@@ -48,13 +48,13 @@ export async function checkPhone(data) {
 		const res = await axios.post(`${process.env.host}/api/v2/check-phone`, data);
 
 		if (res.status === 200) {
-			return res.data.exists;
+			return res.data;
 		}
 		console.error("Ошибка при авторизации:", res.status);
-		return false;
+		return res.data;
 	} catch (error) {
 		console.error("Ошибка при авторизации:", error);
-		return false;
+		return error.response.data;
 	}
 }
 
