@@ -11,7 +11,7 @@ import Input from "@/app/_components/Input";
 import axios from "axios";
 import ModalWindow from "@/app/_components/ModalWindow";
 import Verify from "@/app/(pages)/auth/_components/Verify";
-import { sendAuthCode } from "@/app/(pages)/auth/auth";
+import { sendAuthCode, checkPhone } from "@/app/(pages)/auth/auth";
 import { reg } from "./reg";
 import InputMask from "react-input-mask";
 import Link from "next/link";
@@ -41,6 +41,16 @@ export default function Auth() {
 	const nodeRef = useRef(null);
 
 	const handleAuth = async () => {
+		const checkPhoneStatus = await checkPhone(loginData);
+
+		if (!checkPhoneStatus) {
+			setErrorMessage(prevState => ({
+				...prevState,
+				errors: { phone: "Этот номер телефона не зарегистрирован" },
+			}));
+			return;
+		}
+
 		const isValid = await sendAuthCode(loginData);
 		console.log("isValid", isValid, isLogin);
 
@@ -67,6 +77,16 @@ export default function Auth() {
 	};
 
 	const handleReg = async () => {
+		const checkPhoneStatus = await checkPhone(loginData);
+
+		if (checkPhoneStatus) {
+			setErrorMessage(prevState => ({
+				...prevState,
+				errors: { phone: "Этот номер телефона уже зарегистрирован другим пользователем" },
+			}));
+			return;
+		}
+
 		const isValid = await reg(registrationData);
 		document.cookie = "inn=" + registrationData.inn + "; path=/; samesite=lax;";
 

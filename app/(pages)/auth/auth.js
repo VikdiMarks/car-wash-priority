@@ -43,6 +43,21 @@ export async function verifyCode(data) {
 	}
 }
 
+export async function checkPhone(data) {
+	try {
+		const res = await axios.post(`${process.env.host}/api/v2/check-phone`, data);
+
+		if (res.status === 200) {
+			return res.data.exists;
+		}
+		console.error("Ошибка при авторизации:", res.status);
+		return false;
+	} catch (error) {
+		console.error("Ошибка при авторизации:", error);
+		return false;
+	}
+}
+
 export async function saveOrganizationData() {
 	try {
 		const res = await axiosInstance.get(`/api/v2/organizations/`);
