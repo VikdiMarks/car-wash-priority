@@ -242,7 +242,7 @@ export default function Auth() {
 					<p className={"text-sm text-black/40 text-center max-[430px]:text-[12px]"}>
 						Продолжая использовать сервис, вы соглашаетесь с{" "}
 						<Link className={"text-purple--main"} href="/personal-data-processing">
-							правилами обработки персональных данных
+							политикой конфиденциальности
 						</Link>{" "}
 						и{" "}
 						<a className={"text-purple--main"} href="#">

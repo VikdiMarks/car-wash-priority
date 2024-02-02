@@ -5,7 +5,7 @@ import Button from "@/app/_components/Button";
 import TitleAndOpinion from "@/app/(pages)/auth/_components/TitleAndOpinion";
 import { useState } from "react";
 import Input from "@/app/_components/Input";
-import { createByCalc, getOrganizationData, reqContactData, reqPayData, setData, verifyTel } from "../reg";
+import { createByCalc, getOrganizationData, getPayData, reqContactData, reqPayData, setData, verifyTel } from "../reg";
 import { readCookie } from "@/app/utils/cookie";
 import { sendAuthCode } from "@/app/(pages)/auth/auth";
 import { useRouter } from "next/navigation";
@@ -21,7 +21,7 @@ function formatPhoneNumber(phoneNumber) {
 
 		const formattedRest = `(***) ***-${rest.slice(6, 8)}-${rest.slice(8, 10)}`;
 
-		return `+* ${formattedRest}`;
+		return `+${countryCode} ${formattedRest}`;
 	} else {
 		return phoneNumber;
 	}
@@ -64,13 +64,16 @@ export default function Registration() {
 		car_wash_count_by_week: "",
 	});
 	const [calcSum, setCalcSum] = useState(0);
+	const [verifyPhoneErrorMsg, setVerifyPhoneErrorMsg] = useState("");
 
 	const router = useRouter();
 
 	const handleVerify = async () => {
 		const status = await verifyTel({ phone: phone, code: verificationCode.join("") });
+		setVerifyPhoneErrorMsg("");
+		// console.log("status", status, status !== undefined, !status?.code);
 
-		if (status) {
+		if (status !== undefined && !status?.code) {
 			status && setStep(2);
 			setInvalidFields({});
 
@@ -85,15 +88,33 @@ export default function Registration() {
 				});
 			}
 		} else {
-			alert("Неверный код");
+			if (status?.code) {
+				setVerifyPhoneErrorMsg("Поле code обязательно для заполнения.");
+			} else {
+				setVerifyPhoneErrorMsg("Неверный код");
+			}
 		}
 	};
 	const handleSetData = async () => {
+		if (organizationData.inn === "") {
+			setInvalidFields({
+				inn: "Поле ИНН обязательно для заполнения",
+			});
+			return;
+		}
+
 		const data = await setData(organizationData);
 
 		if (data === true) {
 			setStep(3);
 			setInvalidFields({});
+
+			const payData = await getPayData();
+
+			if (payData) {
+				console.log("payData", payData.organization_pay_data);
+				setPayData(payData.organization_pay_data);
+			}
 		} else {
 			setInvalidFields(data);
 		}
@@ -155,7 +176,7 @@ export default function Registration() {
 					</TitleAndOpinion>
 					<div className={"text-lg font-semibold text-black-100"}>{formatPhoneNumber(phone)}</div>
 					<div className={"text-center"}>
-						<p className={"mb-3 text-sm font-semibold text-black-100"}>Введите 4 цифры из сообщения</p>
+						<p className={"mb-3 text-sm font-semibold text-black-100"}>Введите 6 цифр из сообщения</p>
 						<div className={"flex gap-2 items-center justify-center"}>
 							{verificationCode.map((value, index) => (
 								<Input
@@ -171,6 +192,9 @@ export default function Registration() {
 								/>
 							))}
 						</div>
+						{verifyPhoneErrorMsg && (
+							<span className="text-red-500 text-sm mt-6 block">{verifyPhoneErrorMsg}</span>
+						)}
 					</div>
 					<div>
 						<Button clickHandler={handleVerify} type={"success"}>
@@ -182,8 +206,8 @@ export default function Registration() {
 								Выслать новый
 							</a>{" "}
 							или{" "}
-							<a className={"text-purple--main"} href="#">
-								Позвоните нам
+							<a className={"text-purple--main"} href="mailto:carwashpriority@yandex.ru">
+								Напишите нам
 							</a>
 						</p>
 					</div>
@@ -210,7 +234,6 @@ export default function Registration() {
 						setValue={text => setOrganizationData(prev => ({ ...prev, ogrn: text }))}
 						invalidValue={invalidFields?.ogrn}
 					/>
-					<Input label={"Форма собственности"} placeholder={"ООО без НДС"} />
 					<Input
 						label={"Наименование компании"}
 						placeholder={'ОБЩЕСТВО С ОГРАНИЧЕННОЙ ОТВЕТСТВЕННОСТЬЮ "ТДВ"'}
@@ -238,10 +261,10 @@ export default function Registration() {
 						Укажите реквизиты для получения счетов за обслуживание
 					</TitleAndOpinion>
 					<Input
-						label={"Расчётный счёт"}
-						value={payData.settlement_number}
-						setValue={text => setPayData(prev => ({ ...prev, settlement_number: text }))}
-						invalidValue={invalidFields?.settlement_number}
+						label={"БИК"}
+						value={payData.bic}
+						setValue={text => setPayData(prev => ({ ...prev, bic: text }))}
+						invalidValue={invalidFields?.bic}
 					/>
 					<Input
 						label={"Название банка"}
@@ -250,16 +273,16 @@ export default function Registration() {
 						invalidValue={invalidFields?.name}
 					/>
 					<Input
-						label={"БИК"}
-						value={payData.bic}
-						setValue={text => setPayData(prev => ({ ...prev, bic: text }))}
-						invalidValue={invalidFields?.bic}
-					/>
-					<Input
 						label={"Корреспондентский счёт"}
 						value={payData.correspondent_account}
 						setValue={text => setPayData(prev => ({ ...prev, correspondent_account: text }))}
 						invalidValue={invalidFields?.correspondent_account}
+					/>
+					<Input
+						label={"Расчётный счёт"}
+						value={payData.settlement_number}
+						setValue={text => setPayData(prev => ({ ...prev, settlement_number: text }))}
+						invalidValue={invalidFields?.settlement_number}
 					/>
 					<div className={"flex gap-7 w-full max-[800px]:gap-1"}>
 						<div className={"w-1/2"}>

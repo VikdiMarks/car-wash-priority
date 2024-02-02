@@ -8,15 +8,15 @@ export default function PersonalDataProcessing() {
 	const router = useRouter();
 
 	return (
-		<div>
+		<div className={"md:h-auto md:overflow-y-auto h-screen overflow-y-hidden flex flex-col"}>
 			<div
 				className={
-					"bg-slate-50 w-full flex xl:flex-col justify-between gap-10 p-10 items-start xl:items-center xl:px-0 xl:gap-7"
+					"bg-slate-50 w-full flex xl:flex-col justify-between gap-10 p-10 items-start xl:items-center xl:px-0 xl:gap-7 md:h-auto md:overflow-y-auto h-full overflow-y-hidden"
 				}>
 				<Image width={"55"} height={"70"} src={"/img/logo.svg"} alt={"Лого"} />
 				<section
 					className={
-						"p-10 bg-white rounded-2xl w-full flex flex-col gap-8 items-stretch xl:bg-gradient-to-b xl:from-slate-50 xl:to-white xl:overflow-y-auto xl:pt-0"
+						"p-10 bg-white rounded-2xl w-full flex flex-col gap-8 items-stretch xl:bg-gradient-to-b xl:from-slate-50 xl:to-white xl:overflow-y-auto xl:pt-0 md:h-auto md:overflow-y-auto h-full overflow-y-hidden"
 					}>
 					<header className={"w-full items-center justify-between flex xl:flex-col-reverse gap-10 xl:gap-7"}>
 						<button
@@ -33,7 +33,7 @@ export default function PersonalDataProcessing() {
 					</header>
 					<main
 						className={
-							"flex flex-col gap-8 items-stretch w-full text-black text-opacity-40 text-sm font-normal  leading-tight xl:gap-7"
+							"flex flex-col gap-8 items-stretch w-full text-black text-opacity-40 text-sm font-normal leading-tight xl:gap-7 overflow-y-auto"
 						}>
 						<p>
 							1. Общие положения <br /> 1.1. Настоящие Условия (далее – Условия) представляют собой

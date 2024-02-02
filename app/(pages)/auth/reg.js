@@ -122,6 +122,24 @@ export async function getOrganizationData() {
 	}
 }
 
+export async function getPayData() {
+	try {
+		const res = await axiosInstance.get(
+			`${process.env.host}/api/v2/organizations/${readCookie("organization_id")}/registration/get-pay-data`,
+		);
+
+		if (res.status === 200) {
+			return res.data;
+		} else {
+			console.log("get-pay-data:", res.status);
+			return false;
+		}
+	} catch (error) {
+		console.log("get-pay-data:", error);
+		return error.response.data.errors;
+	}
+}
+
 export async function createByCalc(data) {
 	try {
 		const res = await axiosInstance.post(
