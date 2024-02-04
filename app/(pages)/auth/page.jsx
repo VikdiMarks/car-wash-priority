@@ -2,11 +2,11 @@
 
 import Footer from "@/app/(pages)/auth/_components/Footer";
 import Image from "next/image";
-import { useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import clsx from "clsx";
 import { CSSTransition, SwitchTransition, Transition } from "react-transition-group";
 import Button from "@/app/_components/Button";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Input from "@/app/_components/Input";
 import axios from "axios";
 import ModalWindow from "@/app/_components/ModalWindow";
@@ -37,6 +37,20 @@ export default function Auth() {
 	});
 
 	const router = useRouter();
+	const pathname = usePathname();
+	const searchParams = useSearchParams();
+
+	// Get a new searchParams string by merging the current
+	// searchParams with a provided key/value pair
+	const createQueryString = useCallback(
+		(name, value) => {
+			const params = new URLSearchParams(searchParams.toString());
+			params.set(name, value);
+
+			return params.toString();
+		},
+		[searchParams],
+	);
 
 	const nodeRef = useRef(null);
 
@@ -62,7 +76,9 @@ export default function Auth() {
 		console.log("isValid", isValid, isLogin);
 
 		if (isLogin && isValid === true) {
-			setModalVerify(true);
+			document.cookie = "phone=" + loginData.phone + "; path=/; samesite=lax;";
+			router.push("/auth/registration" + "?" + createQueryString("type", "login"));
+			// setModalVerify(true);
 			setErrorMessage({
 				auth: "",
 				reg: "",

@@ -33,13 +33,10 @@ export async function verifyCode(data) {
 
 			return true;
 		}
-		alert(res.data.message);
-		console.error("Ошибка при авторизации:", res.status);
-		return false;
+		return res.data;
 	} catch (error) {
-		alert(error.response.data.message);
 		console.error("Ошибка при авторизации:", error);
-		return false;
+		return error.response.data;
 	}
 }
 

@@ -7,8 +7,9 @@ import { useState } from "react";
 import Input from "@/app/_components/Input";
 import { createByCalc, getOrganizationData, getPayData, reqContactData, reqPayData, setData, verifyTel } from "../reg";
 import { readCookie } from "@/app/utils/cookie";
-import { sendAuthCode } from "@/app/(pages)/auth/auth";
-import { useRouter } from "next/navigation";
+import { saveOrganizationData, sendAuthCode, verifyCode } from "@/app/(pages)/auth/auth";
+import { useRouter, useSearchParams } from "next/navigation";
+import Checkbox from "@/app/_components/Checkbox";
 
 function formatPhoneNumber(phoneNumber) {
 	if (!phoneNumber) return "";
@@ -65,6 +66,11 @@ export default function Registration() {
 	});
 	const [calcSum, setCalcSum] = useState(0);
 	const [verifyPhoneErrorMsg, setVerifyPhoneErrorMsg] = useState("");
+	const searchParams = useSearchParams();
+	const typeAuth = searchParams.get("type");
+	const [confirmationForLegalEntity, setConfirmationForLegalEntity] = useState(false);
+	const [dataProcessingConsent, setDataProcessingConsent] = useState(false);
+	const [serviceTermsConsent, setServiceTermsConsent] = useState(false);
 
 	const router = useRouter();
 
@@ -95,6 +101,23 @@ export default function Registration() {
 			}
 		}
 	};
+
+	const loginVerify = async () => {
+		if (verificationCode.join("").length !== verificationCode.length) {
+			setVerifyPhoneErrorMsg("Поле code обязательно для заполнения." + verificationCode.length);
+			return;
+		}
+
+		const status = await verifyCode({ phone: phone, code: verificationCode.join("") });
+
+		if (status === true) {
+			await saveOrganizationData();
+			router.push("/home");
+		} else {
+			setVerifyPhoneErrorMsg("Неверный код");
+		}
+	};
+
 	const handleSetData = async () => {
 		if (organizationData.inn === "") {
 			setInvalidFields({
@@ -134,11 +157,21 @@ export default function Registration() {
 	const handleContactData = async () => {
 		const data = await reqContactData(contactData);
 
-		if (data === true) {
+		if (data === true && confirmationForLegalEntity && dataProcessingConsent && serviceTermsConsent) {
 			setStep(5);
 			setInvalidFields({});
 		} else {
-			setInvalidFields(data);
+			const checkBoxErros = {};
+
+			if (!confirmationForLegalEntity) checkBoxErros.confirmationForLegalEntity = "Обязательный выбор";
+			if (!dataProcessingConsent) checkBoxErros.dataProcessingConsent = "Обязательный выбор";
+			if (!serviceTermsConsent) checkBoxErros.serviceTermsConsent = "Обязательный выбор";
+
+			if (data === true) {
+				setInvalidFields(checkBoxErros);
+			} else {
+				setInvalidFields({ ...data, ...checkBoxErros });
+			}
 		}
 	};
 
@@ -197,7 +230,7 @@ export default function Registration() {
 						)}
 					</div>
 					<div>
-						<Button clickHandler={handleVerify} type={"success"}>
+						<Button clickHandler={typeAuth === "login" ? loginVerify : handleVerify} type={"success"}>
 							Подтвердить
 						</Button>
 						<p className={"text-sm text-black/40 text-center mt-4"}>
@@ -326,6 +359,33 @@ export default function Registration() {
 						setValue={text => setContactData(prev => ({ ...prev, email: text }))}
 						invalidValue={invalidFields?.email}
 					/>
+					<div className={"flex gap-3 w-full flex-col"}>
+						<Checkbox
+							title={
+								invalidFields?.confirmationForLegalEntity
+									? invalidFields?.confirmationForLegalEntity
+									: " "
+							}
+							opinion={"Подтверждение действий в интересах юр.лица, ИНН которого было внесено ранее"}
+							isCurrent={confirmationForLegalEntity}
+							setIsCurrent={setConfirmationForLegalEntity}
+							errorTitle={!!invalidFields?.confirmationForLegalEntity}
+						/>
+						<Checkbox
+							title={invalidFields?.dataProcessingConsent ? invalidFields?.dataProcessingConsent : " "}
+							opinion={"Согласие с правилами обработки персональных данных"}
+							isCurrent={dataProcessingConsent}
+							setIsCurrent={setDataProcessingConsent}
+							errorTitle={!!invalidFields?.dataProcessingConsent}
+						/>
+						<Checkbox
+							title={invalidFields?.serviceTermsConsent ? invalidFields?.serviceTermsConsent : " "}
+							opinion={"Согласие с правилами предоставления услуг"}
+							isCurrent={serviceTermsConsent}
+							setIsCurrent={setServiceTermsConsent}
+							errorTitle={!!invalidFields?.serviceTermsConsent}
+						/>
+					</div>
 					<div className={"flex gap-7 w-full max-[800px]:gap-1"}>
 						<div className={"w-1/2"}>
 							<Button clickHandler={() => setStep(3)} type={"secondary"} icon={"arrow-left"}>
