@@ -165,7 +165,7 @@ function PlatformLayout({ children }) {
 						{windowWidth < 768 && <Footer />}
 					</div>
 				</aside>
-				<div className={"grow p-6 pb-4 lg:p-3 flex flex-col overflow-y-auto"}>
+				<div className={"grow p-6 pb-4 lg:p-3 flex flex-col overflow-y-hidden"}>
 					<div className={"grow"}>{children}</div>
 					{windowWidth > 768 && (
 						<div className="flex gap-12 text-black/40 mt-12 lg:flex-col lg:gap-3 lg:items-center">

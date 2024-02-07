@@ -138,11 +138,19 @@ export default function Settings() {
 				<div className={"flex items-center"}>
 					<h1 className={repeatingStyles.title}>Настройки уведомлений</h1>
 				</div>
-				<Checkbox title={"Счета"} opinion={"Все выставленные счета будут приходить на почту"} />
+				<Checkbox
+					title={"Счета"}
+					opinion={"Все выставленные счета будут приходить на почту"}
+					defaultState={true}
+				/>
 				<div className={"w-full h-[1px] bg-black/10"} />
-				<Checkbox title={"Акты"} opinion={"По итогам месяца акты выполненных работ"} />
+				<Checkbox title={"Акты"} opinion={"По итогам месяца акты выполненных работ"} defaultState={true} />
 				<div className={"w-full h-[1px] bg-black/10"} />
-				<Checkbox title={"Напоминания"} opinion={"Мы будет присылать уведомления при окончании баланса"} />
+				<Checkbox
+					title={"Напоминания"}
+					opinion={"Мы будет присылать уведомления при окончании баланса"}
+					defaultState={true}
+				/>
 			</div>
 		</div>
 	);

@@ -4,8 +4,8 @@ import { useState } from "react";
 
 import Image from "next/image";
 
-export default function Checkbox({ isCurrent, setIsCurrent, title, opinion, size, errorTitle }) {
-	const [isCurrentForTest, setIsCurrentForTest] = useState(false);
+export default function Checkbox({ isCurrent, setIsCurrent, title, opinion, size, errorTitle, defaultState }) {
+	const [isCurrentForTest, setIsCurrentForTest] = useState(!!defaultState);
 
 	if (size === "small") {
 		return (
@@ -62,7 +62,7 @@ export default function Checkbox({ isCurrent, setIsCurrent, title, opinion, size
 				{title && opinion && (
 					<div>
 						<p className={"text-black-100" + (errorTitle ? " text-red-600" : "")}>{title}</p>
-						<p className={"text-black/40"}>{opinion}</p>
+						<p className={"text-black/40"} dangerouslySetInnerHTML={{ __html: opinion }}></p>
 					</div>
 				)}
 			</div>

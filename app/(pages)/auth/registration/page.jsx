@@ -366,21 +366,27 @@ export default function Registration() {
 									? invalidFields?.confirmationForLegalEntity
 									: " "
 							}
-							opinion={"Подтверждение действий в интересах юр.лица, ИНН которого было внесено ранее"}
+							opinion={
+								'<p class="text-black text-opacity-80 text-sm font-normal">Подтверждаю действия в интересах юр.лица, ИНН которого было внесено ранее</p>'
+							}
 							isCurrent={confirmationForLegalEntity}
 							setIsCurrent={setConfirmationForLegalEntity}
 							errorTitle={!!invalidFields?.confirmationForLegalEntity}
 						/>
 						<Checkbox
 							title={invalidFields?.dataProcessingConsent ? invalidFields?.dataProcessingConsent : " "}
-							opinion={"Согласие с правилами обработки персональных данных"}
+							opinion={
+								'<p class="text-black text-opacity-80 text-sm font-normal">Соглашаюсь с <a style="color: #95A4FC" href="/personal-data-processing">Правилами обработки персональных данных</a></p>'
+							}
 							isCurrent={dataProcessingConsent}
 							setIsCurrent={setDataProcessingConsent}
 							errorTitle={!!invalidFields?.dataProcessingConsent}
 						/>
 						<Checkbox
 							title={invalidFields?.serviceTermsConsent ? invalidFields?.serviceTermsConsent : " "}
-							opinion={"Согласие с правилами предоставления услуг"}
+							opinion={
+								'<p class="text-black text-opacity-80 text-sm font-normal">Соглашаюсь с <a style="color: #95A4FC" href="/personal-data-processing">Правилами предоставления услуг</a></p>'
+							}
 							isCurrent={serviceTermsConsent}
 							setIsCurrent={setServiceTermsConsent}
 							errorTitle={!!invalidFields?.serviceTermsConsent}

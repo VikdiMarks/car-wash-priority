@@ -53,7 +53,7 @@ export default function Table({ drivers = [], updateDrivers }) {
 
 	return (
 		<>
-			<div>
+			<div className={"overflow-y-auto"}>
 				<div className={"flex w-full border-b border-[#cccccc]"}>
 					{["Номер телефона", "Баланс", "Заездов в день", "Действия"].map((title, index) => (
 						<div
