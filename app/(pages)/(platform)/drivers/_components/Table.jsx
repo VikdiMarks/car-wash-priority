@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import Item from "@/app/(pages)/(platform)/drivers/_components/Item";
 import { deleteDriver, setBalance } from "@/app/(pages)/(platform)/drivers/drivers";
 import { getOrganizationData } from "@/app/(pages)/(platform)/platform";
+import formatPhoneNumber from "@/app/utils/utils";
 
 export default function Table({ drivers = [], updateDrivers }) {
 	const [popups, setPopups] = useState({
@@ -36,20 +37,6 @@ export default function Table({ drivers = [], updateDrivers }) {
 
 		await updateDrivers();
 	};
-
-	function formatPhoneNumber(number) {
-		const cleanNumber = number.replace(/\D/g, "");
-
-		if (cleanNumber.length !== 11) {
-			console.error("Incorrect phone number format");
-			return number;
-		}
-
-		return `+${cleanNumber.slice(0, 1)} (${cleanNumber.slice(1, 4)}) ${cleanNumber.slice(4, 7)}-${cleanNumber.slice(
-			7,
-			9,
-		)}-${cleanNumber.slice(9)}`;
-	}
 
 	return (
 		<>

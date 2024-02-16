@@ -12,10 +12,7 @@ export default function Acts({ data }) {
 					canBeSorted: true,
 				},
 				{
-					title: "Дата подтверждения",
-				},
-				{
-					title: "Статус",
+					title: "Значение",
 				},
 				{
 					title: "Скачать",

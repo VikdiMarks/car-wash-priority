@@ -1,8 +1,9 @@
 import Image from "next/image";
+import { formatDate, formatPhoneNumber } from "@/app/utils/utils";
 
-export function Operation({ type }) {
+export function Operation({ type, value, user, date }) {
 	return (
-		<div className={"flex gap-2 p-1"}>
+		<div className={"flex gap-2 p-1 w-full"}>
 			<div className={"flex flex-col justify-between items-center"}>
 				<Image
 					width={24}
@@ -14,10 +15,10 @@ export function Operation({ type }) {
 			</div>
 			<div>
 				<p className={"text-sm text-black-100"}>
-					- 60 <span className={"font-bold"}>₽</span>
+					{(type === "debit" ? "- " : "+ ") + value} <span className={"font-bold"}>₽</span>
 				</p>
-				<p className={"text-black/40"}>+7 (920) 471 - 16 -66</p>
-				<p className={"text-black/20"}>12 минут назад</p>
+				<p className={"text-black/40"}>{user ? formatPhoneNumber(user.phone) : ""}</p>
+				<p className={"text-black/20"}>{formatDate(date)}</p>
 			</div>
 		</div>
 	);

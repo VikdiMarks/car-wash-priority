@@ -27,16 +27,8 @@ export default function Table({ data = { models: [] } }) {
 						),
 					)}
 				</div>
-				{data.models.map(({ number, address, date, source, sum, type }) => (
-					<Item
-						key={number}
-						number={number}
-						address={address}
-						date={date}
-						source={source}
-						sum={sum}
-						type={type}
-					/>
+				{data.map(({ id, wash, created_at, value, type, user }) => (
+					<Item key={id} number={id} wash={wash} date={created_at} value={value} type={type} user={user} />
 				))}
 			</div>
 		);
@@ -57,7 +49,7 @@ export default function Table({ data = { models: [] } }) {
 							),
 						)}
 					</div>
-					{data.models.map(({ number, address, date, source, sum, type }) => (
+					{data.map(({ number, address, date, source, sum, type }) => (
 						<Item
 							key={number}
 							number={number}

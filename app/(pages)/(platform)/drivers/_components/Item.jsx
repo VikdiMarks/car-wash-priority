@@ -4,6 +4,7 @@ import Image from "next/image";
 import clsx from "clsx";
 import { useEffect, useState } from "react";
 import { setBalance } from "@/app/(pages)/(platform)/drivers/drivers";
+import { formatPhoneNumber } from "@/app/utils/utils";
 
 export default function Item({ phone, balance, races, deleteDriver, editDriver, id, updateDrivers }) {
 	const [balanceDriver, setBalanceDriver] = useState(balance);
@@ -25,7 +26,7 @@ export default function Item({ phone, balance, races, deleteDriver, editDriver, 
 
 	return (
 		<div className={"flex w-full text-black-100"}>
-			<div className="flex basis-1/4 items-center px-4 lg:px-1 py-2">{phone}</div>
+			<div className="flex basis-1/4 items-center px-4 lg:px-1 py-2">{formatPhoneNumber(phone)}</div>
 			<div className="flex-middle basis-1/4 px-4 lg:px-1 py-2 flex-col gap-1">
 				<input
 					className={clsx(

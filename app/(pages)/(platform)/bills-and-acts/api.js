@@ -1,10 +1,10 @@
 import { axiosInstance } from "@/app/utils/axios-instance";
 import { readCookie } from "@/app/utils/cookie";
 
-export async function getInvoices() {
+export async function getInvoices(page = 1) {
 	try {
 		const res = await axiosInstance.get(
-			`${process.env.host}/api/v2/organizations/${readCookie("organization_id")}/invoices`,
+			`${process.env.host}/api/v2/organizations/${readCookie("organization_id")}/invoices?page=${page}`,
 		);
 
 		if (res.status === 200) {
@@ -18,10 +18,10 @@ export async function getInvoices() {
 	}
 }
 
-export async function getActs() {
+export async function getActs(page = 1) {
 	try {
 		const res = await axiosInstance.get(
-			`${process.env.host}/api/v2/organizations/${readCookie("organization_id")}/acts`,
+			`${process.env.host}/api/v2/organizations/${readCookie("organization_id")}/acts?page=${page}`,
 		);
 
 		if (res.status === 200) {

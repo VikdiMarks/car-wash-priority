@@ -13,12 +13,15 @@ import Input from "@/app/_components/Input";
 import { createInvoices, getOrganizationData } from "@/app/(pages)/(platform)/platform";
 import withAuth from "@/app/utils/withAuth";
 import Footer from "@/app/(pages)/auth/_components/Footer";
+import { getHistory, getUsers } from "@/app/(pages)/(platform)/history/api";
 
 function PlatformLayout({ children }) {
 	const pathname = usePathname();
 	const router = useRouter();
 
 	const [isHaveContent, setIsHaveContent] = useState(false);
+	const [history, setHistory] = useState([]);
+	const [users, setUsers] = useState([]);
 
 	const [windowWidth, setWindowWidth] = useState(0);
 	const [organizationInfo, setOrganizationInfo] = useState({});
@@ -36,7 +39,7 @@ function PlatformLayout({ children }) {
 		const fetchData = async () => {
 			try {
 				const data = await getOrganizationData();
-				console.log("data", data);
+				// console.log("data", data);
 				if (data) {
 					setOrganizationInfo(data);
 				}
@@ -47,6 +50,45 @@ function PlatformLayout({ children }) {
 
 		fetchData();
 	}, []);
+
+	useEffect(() => {
+		const fetchData = async () => {
+			try {
+				const data = await getHistory(1, 999);
+
+				if (data) {
+					setHistory(data.models);
+				}
+			} catch (error) {
+				console.error("Ошибка при получении данных об организации", error);
+			}
+		};
+
+		fetchData();
+	}, []);
+
+	useEffect(() => {
+		const fetchData = async () => {
+			try {
+				const data = await getUsers();
+				if (data) {
+					console.log("users", data);
+					setUsers(data.data);
+				}
+			} catch (error) {
+				console.error("Ошибка при получении данных об организации", error);
+			}
+		};
+		fetchData();
+
+		if (history) {
+			const result = history.map(transaction => {
+				transaction.user = users.find(user => user.id === transaction.user_id);
+
+				return transaction;
+			});
+		}
+	}, [history]);
 
 	const [showModalRefill, setShowModalRefill] = useState(false);
 
@@ -122,7 +164,7 @@ function PlatformLayout({ children }) {
 								</div>
 								<p className={"text-2xl mt-2 mb-6"}>{organizationInfo?.balance}</p>
 							</div>
-							<div className={"hidden md:block mt-4"}>
+							<div className={"md:block mt-4"}>
 								<Button type={"success-secondary"} clickHandler={() => setShowModalRefill(true)}>
 									Пополнить
 								</Button>
@@ -165,7 +207,7 @@ function PlatformLayout({ children }) {
 						{windowWidth < 768 && <Footer />}
 					</div>
 				</aside>
-				<div className={"grow p-6 pb-4 lg:p-3 flex flex-col overflow-y-hidden"}>
+				<div className={"grow p-6 pb-4 lg:p-3 flex flex-col overflow-y-auto"}>
 					<div className={"grow"}>{children}</div>
 					{windowWidth > 768 && (
 						<div className="flex gap-12 text-black/40 mt-12 lg:flex-col lg:gap-3 lg:items-center">
@@ -184,9 +226,9 @@ function PlatformLayout({ children }) {
 				{pathname !== "/history" && (
 					<aside
 						className={clsx(
-							"md:pb-5 md:mt-6 md:w-full md:border-t md:border-black/10 min-w-[180px] lg:px-2 relative w-[280px] border-l border-solid border-black/10 px-6 py-[72px]",
+							"md:pb-5 md:mt-6 md:w-full md:border-t md:border-black/10 min-w-[180px] lg:px-2 relative w-[280px] border-l border-solid border-black/10 px-6 py-[72px] overflow-y-hidden",
 							{
-								"flex-middle": !isHaveContent,
+								"": !isHaveContent,
 								"flex flex-col gap-2 md:items-center": isHaveContent,
 							},
 						)}>
@@ -196,13 +238,20 @@ function PlatformLayout({ children }) {
 							}>
 							История операций
 						</h6>
-						{isHaveContent ? (
-							<>
-								<Operation type={"debit"} />
-								<Operation type={"debit"} />
-								<Operation type={"debit"} />
-								<Operation type={"refill"} />
-							</>
+						{history ? (
+							<div
+								className={
+									"w-full flex flex-col gap-2 items-center justify-items-start h-full overflow-y-auto"
+								}>
+								{history.map(item => (
+									<Operation
+										type={item.type === "waste" ? "debit" : "refill"}
+										value={item.value}
+										user={item.user}
+										date={item.created_at}
+									/>
+								))}
+							</div>
 						) : (
 							<ZeroContent text={"Тут будут отображаться операции по балансу организации"} />
 						)}
