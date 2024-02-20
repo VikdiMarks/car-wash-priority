@@ -33,8 +33,10 @@ export async function deleteDriver(userId) {
 	}
 }
 
-export async function getDrivers() {
-	const res = await axiosInstance.get(`/api/v2/organizations/${readCookie("organization_id")}/users?role_id=0`);
+export async function getDrivers(page = 1, per_page = 15) {
+	const res = await axiosInstance.get(
+		`/api/v2/organizations/${readCookie("organization_id")}/users?role_id=0&page=${page}&per_page=${per_page}`,
+	);
 
 	try {
 		if (res.status === 200) {

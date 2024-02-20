@@ -1,8 +1,16 @@
 import React, { useEffect } from "react";
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button } from "@nextui-org/react";
 
-export default function DropdownUI({ text, list, buttonClassName, menuClassName, itemClassName, callback }) {
-	const [selectedKeys, setSelectedKeys] = React.useState(new Set([text]));
+export default function DropdownUI({
+	text,
+	list,
+	buttonClassName,
+	menuClassName,
+	itemClassName,
+	callback,
+	defaultValue,
+}) {
+	const [selectedKeys, setSelectedKeys] = React.useState(new Set([defaultValue ? defaultValue.text : text]));
 
 	const selectedValue = React.useMemo(() => Array.from(selectedKeys).join(", ").replaceAll("_", " "), [selectedKeys]);
 

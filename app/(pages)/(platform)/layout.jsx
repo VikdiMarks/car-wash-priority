@@ -207,7 +207,7 @@ function PlatformLayout({ children }) {
 						{windowWidth < 768 && <Footer />}
 					</div>
 				</aside>
-				<div className={"grow p-6 pb-4 lg:p-3 flex flex-col overflow-y-auto"}>
+				<div className={"w-full grow p-6 pb-4 lg:p-3 flex flex-col overflow-y-auto"}>
 					<div className={"grow"}>{children}</div>
 					{windowWidth > 768 && (
 						<div className="flex gap-12 text-black/40 mt-12 lg:flex-col lg:gap-3 lg:items-center">
@@ -226,7 +226,7 @@ function PlatformLayout({ children }) {
 				{pathname !== "/history" && (
 					<aside
 						className={clsx(
-							"md:pb-5 md:mt-6 md:w-full md:border-t md:border-black/10 min-w-[180px] lg:px-2 relative w-[280px] border-l border-solid border-black/10 px-6 py-[72px] overflow-y-hidden",
+							"md:hidden md:block md:pb-5 md:mt-6 md:w-full md:border-t md:border-black/10 min-w-[180px] lg:px-2 relative w-[280px] border-l border-solid border-black/10 px-6 py-[72px] overflow-y-hidden",
 							{
 								"": !isHaveContent,
 								"flex flex-col gap-2 md:items-center": isHaveContent,
@@ -249,6 +249,7 @@ function PlatformLayout({ children }) {
 										value={item.value}
 										user={item.user}
 										date={item.created_at}
+										key={item.id}
 									/>
 								))}
 							</div>

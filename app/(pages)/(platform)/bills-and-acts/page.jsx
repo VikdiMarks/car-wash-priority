@@ -11,6 +11,7 @@ import Dropdown from "@/app/(pages)/(platform)/_components/Dropdown";
 import DropdownUI from "@/app/(pages)/(platform)/_components/Dropdown";
 import Pagination from "@/app/_components/Pagination";
 import PaginationUI from "@/app/_components/Pagination";
+import "rsuite/dist/rsuite.min.css";
 
 export default function BillsAndActs() {
 	const [subpage, setSubpage] = useState("счета");
@@ -151,7 +152,10 @@ export default function BillsAndActs() {
 							? "cursor-default text-black-100 font-semibold before:w-full"
 							: "before:w-0",
 					)}
-					onClick={() => setSubpage("счета")}>
+					onClick={() => {
+						setCurrentPage(1);
+						setSubpage("счета");
+					}}>
 					Счета
 				</button>
 				<button
@@ -159,7 +163,10 @@ export default function BillsAndActs() {
 						"before:transition-all before:duration-300 relative hover:text-black-100 duration-300 before:absolute before:bottom-[-4px] before:h-0.5 before:bg-black-100 before:rounded-lg",
 						subpage === "акты" ? "cursor-default text-black-100 font-semibold before:w-full" : "before:w-0",
 					)}
-					onClick={() => setSubpage("акты")}>
+					onClick={() => {
+						setCurrentPage(1);
+						setSubpage("акты");
+					}}>
 					Акты
 				</button>
 			</nav>
