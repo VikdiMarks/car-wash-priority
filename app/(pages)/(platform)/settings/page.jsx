@@ -7,7 +7,7 @@ import toast from "react-hot-toast";
 import Checkbox from "@/app/_components/Checkbox";
 import { useEffect, useState } from "react";
 import { getContactData, getOrganizationData, getPayData } from "@/app/(pages)/(platform)/platform";
-import { editEmail, editName } from "@/app/(pages)/(platform)/settings/api";
+import { editEmail, editName, getProfile } from "@/app/(pages)/(platform)/settings/api";
 
 const repeatingStyles = {
 	block: "rounded-2xl bg-[#F7F9FB] p-6 w-full gap-6 flex flex-col",
@@ -18,7 +18,7 @@ export default function Settings() {
 	const [windowWidth, setWindowWidth] = useState(0);
 	const [organizationInfo, setOrganizationInfo] = useState({});
 	const [payInfo, setPayInfo] = useState({});
-	const [contactInfo, setContactInfo] = useState({});
+	const [profileInfo, setProfileInfo] = useState({});
 	const [name, setName] = useState("");
 	const [email, setEmail] = useState("");
 
@@ -63,10 +63,10 @@ export default function Settings() {
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
-				const data = await getContactData();
+				const data = await getProfile();
 				console.log("data", data);
 				if (data) {
-					setContactInfo(data);
+					setProfileInfo(data);
 				}
 			} catch (error) {
 				console.error("Ошибка при получении данных об организации", error);
@@ -109,8 +109,8 @@ export default function Settings() {
 						<Button type={"medium-gray"}>Отменить</Button>
 						<Button
 							clickHandler={async () => {
-								const resName = await editName({ name: contactInfo?.fio });
-								const resEmail = await editEmail({ email: contactInfo?.email });
+								const resName = await editName({ name: profileInfo?.fio });
+								const resEmail = await editEmail({ email: profileInfo?.email });
 
 								if (resName && resEmail) {
 									toast.success("Изменения сохранены");
@@ -124,16 +124,16 @@ export default function Settings() {
 				<Input
 					type={"big-input"}
 					label={"ФИО"}
-					value={contactInfo?.fio}
+					value={profileInfo?.name}
 					setValue={value => {
-						setContactInfo(prevState => ({ ...prevState, fio: value }));
+						setProfileInfo(prevState => ({ ...prevState, fio: value }));
 					}}
 				/>
 				<Input
 					type={"big-input"}
 					label={"E-mail"}
-					value={contactInfo?.email}
-					setValue={value => setContactInfo(prevState => ({ ...prevState, email: value }))}
+					value={profileInfo?.email}
+					setValue={value => setProfileInfo(prevState => ({ ...prevState, email: value }))}
 				/>
 				<div className={"flex items-center"}>
 					<h1 className={repeatingStyles.title}>Настройки уведомлений</h1>

@@ -171,8 +171,10 @@ export default function BillsAndActs() {
 				</button>
 			</nav>
 			<div
-				className={"mt-6 mb-2 bg-[#F7F9FB] rounded-lg w-full p-2 flex items-center gap-4 md:gap-3.5 flex-wrap"}>
-				<div className={"relative grow md:w-full"}>
+				className={
+					"mt-6 mb-2 bg-[#F7F9FB] rounded-lg w-full p-2 flex items-center gap-4 md:gap-3.5 md:flex-wrap"
+				}>
+				<div className={"relative grow w-full"}>
 					<Image
 						className={"absolute left-1.5 top-1/2 -translate-y-1/2"}
 						width={16}
@@ -182,19 +184,19 @@ export default function BillsAndActs() {
 					/>
 					<input
 						className={
-							"focus:border-black/20 w-full border border-black/10 bg-white/80 rounded-lg text-sm px-4 py-1 pl-[26px] placeholder:text-black/20 text-black-100"
+							"focus:border-black/20 w-full border border-black/10 bg-white/80 rounded-lg text-sm px-4 py-2 pl-[26px] placeholder:text-black/20 text-black-100"
 						}
 						placeholder={"Поиск"}
 						onChange={e => handleSearch(e.target.value)}
 					/>
 				</div>
 				{subpage !== "акты" && (
-					<div className={"relative w-[200px] md:w-full"}>
+					<div className={"relative min-w-[200px] md:w-full"}>
 						<DropdownUI
 							text={"Тип операции"}
 							list={statusList}
 							buttonClassName={
-								"w-full border border-black/10 bg-white/80 rounded-lg text-sm px-4 py-1 placeholder:text-black/20 text-black-100"
+								"w-full border border-black/10 bg-white/80 rounded-lg text-sm px-4 py-2 placeholder:text-black/20 text-black-100"
 							}
 							menuClassName={"w-full border border-black/10 bg-white/80 rounded-lg w-[200px] text-center"}
 							itemClassName={
@@ -211,7 +213,7 @@ export default function BillsAndActs() {
 						/>
 					</div>
 				)}
-				<div className="flex items-center gap-2 md:w-full md:flex-col w-full">
+				<div className="flex items-center gap-2 md:w-full md:flex-col min-w-[300px]">
 					<div className={"relative max-w-[166px] md:w-full md:max-w-full"}>
 						<DatePicker
 							format="MM/dd/yyyy"

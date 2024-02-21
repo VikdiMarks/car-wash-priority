@@ -141,7 +141,7 @@ function PlatformLayout({ children }) {
 				</header>
 				<aside
 					className={clsx(
-						"md:border-none overflow-hidden w-[252px] min-w-[160px] p-4 pt-6 lg:p-2 border-r border-solid border-black/10 md:w-full md:fixed md:min-h-screen md:max-h-screen top-0 left-0 md:bg-white z-30 md:justify-center transition-all duration-300 md:overflow-y-auto md:pt-28",
+						"md:border-none overflow-hidden w-[252px] min-w-[252px] p-4 pt-6 lg:p-2 border-r border-solid border-black/10 md:w-full md:fixed md:min-h-screen md:max-h-screen top-0 left-0 md:bg-white z-30 md:justify-center transition-all duration-300 md:overflow-y-auto md:pt-28",
 						{ "translate-x-0": menuOpen, "md:-translate-x-full": !menuOpen },
 					)}>
 					<div className={"flex flex-col justify-between gap-[10px]"}>
@@ -163,11 +163,11 @@ function PlatformLayout({ children }) {
 									/>
 								</div>
 								<p className={"text-2xl mt-2 mb-6"}>{organizationInfo?.balance}</p>
-							</div>
-							<div className={"md:block mt-4"}>
-								<Button type={"success-secondary"} clickHandler={() => setShowModalRefill(true)}>
-									Пополнить
-								</Button>
+								<div className={"md:block mt-4"}>
+									<Button type={"success-secondary"} clickHandler={() => setShowModalRefill(true)}>
+										Пополнить
+									</Button>
+								</div>
 							</div>
 						</div>
 						<div
@@ -226,7 +226,7 @@ function PlatformLayout({ children }) {
 				{pathname !== "/history" && (
 					<aside
 						className={clsx(
-							"md:hidden md:block md:pb-5 md:mt-6 md:w-full md:border-t md:border-black/10 min-w-[180px] lg:px-2 relative w-[280px] border-l border-solid border-black/10 px-6 py-[72px] overflow-y-hidden",
+							"md:hidden md:block md:pb-5 md:mt-6 md:w-full md:border-t md:border-black/10 min-w-[252px] lg:px-2 relative w-[280px] border-l border-solid border-black/10 px-6 py-[72px] overflow-y-hidden",
 							{
 								"": !isHaveContent,
 								"flex flex-col gap-2 md:items-center": isHaveContent,

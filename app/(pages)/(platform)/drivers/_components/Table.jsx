@@ -48,7 +48,7 @@ export default function Table({ drivers = [], updateDrivers }) {
 								"px-4 border-l-black-low-opacity-gradient justify-center": index !== 0,
 							})}
 							key={index}>
-							{index === 0 && <Checkbox size={"small"} />}
+							{/*{index === 0 && <Checkbox size={"small"} />}*/}
 							<p>{title}</p>
 						</div>
 					))}

@@ -32,3 +32,18 @@ export async function editEmail(data) {
 		return false;
 	}
 }
+
+export async function getProfile() {
+	try {
+		const res = await axiosInstance.get(`${process.env.host}/api/v2/user`);
+
+		if (res.status === 200) {
+			return res.data.profile;
+		}
+		console.error("getProfile:", res.status);
+		return false;
+	} catch (error) {
+		console.error("getProfile:", error);
+		return false;
+	}
+}
