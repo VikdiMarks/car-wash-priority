@@ -12,6 +12,7 @@ import DropdownUI from "@/app/(pages)/(platform)/_components/Dropdown";
 import Pagination from "@/app/_components/Pagination";
 import PaginationUI from "@/app/_components/Pagination";
 import "rsuite/dist/rsuite.min.css";
+import ZeroContent from "@/app/(pages)/(platform)/_components/ZeroContent";
 
 export default function BillsAndActs() {
 	const [subpage, setSubpage] = useState("счета");
@@ -237,12 +238,33 @@ export default function BillsAndActs() {
 					</div>
 				</div>
 			</div>
-			{subpage === "счета" ? <Bills data={isBillsContent} /> : <Acts data={isActsContent} />}
-			{totalPages > 1 && (
-				<div className={"w-full flex items-center justify-center"}>
-					<PaginationUI switchPage={switchPage} currentPage={currentPage} totalPages={totalPages} />
-				</div>
-			)}
+			{(() => {
+				if (
+					(subpage === "счета" && isBillsContent.length > 0) ||
+					(subpage === "акты" && isActsContent.length > 0)
+				) {
+					return (
+						<>
+							{subpage === "счета" ? <Bills data={isBillsContent} /> : <Acts data={isActsContent} />}
+							{totalPages > 1 && (
+								<div className={"w-full flex items-center justify-center"}>
+									<PaginationUI
+										switchPage={switchPage}
+										currentPage={currentPage}
+										totalPages={totalPages}
+									/>
+								</div>
+							)}
+						</>
+					);
+				} else {
+					return (
+						<div className={"flex-middle h-full"}>
+							<ZeroContent text={"Тут будут отображаться операции по балансу организации"} />
+						</div>
+					);
+				}
+			})()}
 		</section>
 	);
 }

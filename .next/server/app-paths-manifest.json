@@ -1,11 +1,7 @@
 {
-  "/(pages)/page": "app/(pages)/page.js",
-  "/(pages)/personal-data-processing/page": "app/(pages)/personal-data-processing/page.js",
   "/(pages)/auth/page": "app/(pages)/auth/page.js",
-  "/(pages)/(platform)/bills-and-acts/page": "app/(pages)/(platform)/bills-and-acts/page.js",
-  "/(pages)/(platform)/history/page": "app/(pages)/(platform)/history/page.js",
-  "/(pages)/auth/registration/page": "app/(pages)/auth/registration/page.js",
   "/(pages)/(platform)/home/page": "app/(pages)/(platform)/home/page.js",
-  "/(pages)/(platform)/settings/page": "app/(pages)/(platform)/settings/page.js",
+  "/(pages)/(platform)/bills-and-acts/page": "app/(pages)/(platform)/bills-and-acts/page.js",
+  "/(pages)/auth/registration/page": "app/(pages)/auth/registration/page.js",
   "/(pages)/(platform)/drivers/page": "app/(pages)/(platform)/drivers/page.js"
 }

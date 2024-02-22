@@ -490,7 +490,7 @@ export default function Registration() {
 					<div className="flex flex-col gap-4 w-full">
 						<Button
 							clickHandler={() => {
-								router.push("/home");
+								router.push("/bills-and-acts");
 							}}
 							type={"success"}>
 							Получить счет

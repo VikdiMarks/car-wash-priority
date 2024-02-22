@@ -134,92 +134,92 @@ export default function History() {
 		}
 	}, [isHaveContent]);
 
-	if (isHaveContent) {
-		return (
-			<section className={"flex flex-col gap-7"}>
-				<div className={"bg-[#F7F9FB] rounded-lg w-full p-2 flex items-center gap-4 lg:gap-2 md:flex-wrap"}>
-					<div className={"relative w-2/3 md:w-full"}>
-						<Image
-							className={"absolute left-1.5 top-1/2 -translate-y-1/2"}
-							width={16}
-							height={16}
-							src={"/img/icons/search.svg"}
-							alt={"Поиск"}
-						/>
-						<input
+	return (
+		<section className={"flex flex-col gap-7"}>
+			<div className={"bg-[#F7F9FB] rounded-lg w-full p-2 flex items-center gap-4 lg:gap-2 md:flex-wrap"}>
+				<div className={"relative w-2/3 md:w-full"}>
+					<Image
+						className={"absolute left-1.5 top-1/2 -translate-y-1/2"}
+						width={16}
+						height={16}
+						src={"/img/icons/search.svg"}
+						alt={"Поиск"}
+					/>
+					<input
+						className={
+							"w-full border border-black/10 bg-white/80 rounded-lg text-sm px-4 py-2 pl-[26px] placeholder:text-black/20 text-black-100"
+						}
+						placeholder={"Поиск по водителю или месту"}
+						onChange={e => handleSearch(e.target.value)}
+					/>
+				</div>
+				<div className={"relative grow md:w-full min-w-[200px]"}>
+					<DropdownUI
+						text={"Тип операции"}
+						list={statusList}
+						buttonClassName={
+							"w-full border border-black/10 bg-white/80 rounded-lg text-sm px-4 py-2 placeholder:text-black/20 text-black-100"
+						}
+						menuClassName={"w-full border border-black/10 bg-white/80 rounded-lg w-[200px] text-center"}
+						itemClassName={
+							"w-full flex justify-center items-center py-1 hover:border-[#F7F9FB] hover:bg-[#F7F9FB] rounded-lg hover:border-black/10"
+						}
+						callback={handleStatusChange}
+					/>
+					<Image
+						className={"absolute right-3 top-1/2 -translate-y-1/2"}
+						width={16}
+						height={16}
+						src={"/img/icons/arrow-range.svg"}
+						alt={"Тип операции"}
+					/>
+					<Image
+						className={"absolute right-3 top-1/2 -translate-y-1/2"}
+						width={16}
+						height={16}
+						src={"/img/icons/arrow-range.svg"}
+						alt={"Тип операции"}
+					/>
+				</div>
+				{/* TODO: поправить сьезжающие иконки календарей в инпутах (мобилы) */}
+				<div className="flex items-center gap-2 md:w-full md:flex-col min-w-[300px]">
+					<div className={"relative max-w-[166px] md:w-full md:max-w-full"}>
+						<DatePicker
+							format="MM/dd/yyyy"
 							className={
-								"w-full border border-black/10 bg-white/80 rounded-lg text-sm px-4 py-2 pl-[26px] placeholder:text-black/20 text-black-100"
+								"text-center w-full border border-black/10 bg-white/80 rounded-lg text-sm placeholder:text-black/20 text-black-100"
 							}
-							placeholder={"Поиск по водителю или месту"}
-							onChange={e => handleSearch(e.target.value)}
+							placeholder={"Дата от"}
+							onChange={date => handleStartDateChange(date)}
 						/>
 					</div>
-					<div className={"relative grow md:w-full min-w-[200px]"}>
-						<DropdownUI
-							text={"Тип операции"}
-							list={statusList}
-							buttonClassName={
-								"w-full border border-black/10 bg-white/80 rounded-lg text-sm px-4 py-2 placeholder:text-black/20 text-black-100"
+					<div className={"w-1 h-[1px] bg-black md:hidden"} />
+					<div className={"relative max-w-[166px] md:w-full md:max-w-full"}>
+						<DatePicker
+							format="MM/dd/yyyy"
+							className={
+								"text-center w-full border border-black/10 bg-white/80 rounded-lg text-sm placeholder:text-black/20 text-black-100"
 							}
-							menuClassName={"w-full border border-black/10 bg-white/80 rounded-lg w-[200px] text-center"}
-							itemClassName={
-								"w-full flex justify-center items-center py-1 hover:border-[#F7F9FB] hover:bg-[#F7F9FB] rounded-lg hover:border-black/10"
-							}
-							callback={handleStatusChange}
+							placeholder={"Дата до"}
+							onChange={date => handleEndDateChange(date)}
 						/>
-						<Image
-							className={"absolute right-3 top-1/2 -translate-y-1/2"}
-							width={16}
-							height={16}
-							src={"/img/icons/arrow-range.svg"}
-							alt={"Тип операции"}
-						/>
-						<Image
-							className={"absolute right-3 top-1/2 -translate-y-1/2"}
-							width={16}
-							height={16}
-							src={"/img/icons/arrow-range.svg"}
-							alt={"Тип операции"}
-						/>
-					</div>
-					{/* TODO: поправить сьезжающие иконки календарей в инпутах (мобилы) */}
-					<div className="flex items-center gap-2 md:w-full md:flex-col min-w-[300px]">
-						<div className={"relative max-w-[166px] md:w-full md:max-w-full"}>
-							<DatePicker
-								format="MM/dd/yyyy"
-								className={
-									"text-center w-full border border-black/10 bg-white/80 rounded-lg text-sm placeholder:text-black/20 text-black-100"
-								}
-								placeholder={"Дата от"}
-								onChange={date => handleStartDateChange(date)}
-							/>
-						</div>
-						<div className={"w-1 h-[1px] bg-black md:hidden"} />
-						<div className={"relative max-w-[166px] md:w-full md:max-w-full"}>
-							<DatePicker
-								format="MM/dd/yyyy"
-								className={
-									"text-center w-full border border-black/10 bg-white/80 rounded-lg text-sm placeholder:text-black/20 text-black-100"
-								}
-								placeholder={"Дата до"}
-								onChange={date => handleEndDateChange(date)}
-							/>
-						</div>
 					</div>
 				</div>
-				<Table data={isHaveContent} />
-				{totalPages > 1 && (
-					<div className={"w-full flex items-center justify-center"}>
-						<PaginationUI switchPage={switchPage} currentPage={currentPage} totalPages={totalPages} />
-					</div>
-				)}
-			</section>
-		);
-	} else {
-		return (
-			<div className={"flex-middle min-h-screen"}>
-				<ZeroContent text={"Тут будут отображаться операции по балансу организации"} />
 			</div>
-		);
-	}
+			{isHaveContent && isHaveContent.length > 0 ? (
+				<>
+					<Table data={isHaveContent} />
+					{totalPages > 1 && (
+						<div className={"w-full flex items-center justify-center"}>
+							<PaginationUI switchPage={switchPage} currentPage={currentPage} totalPages={totalPages} />
+						</div>
+					)}
+				</>
+			) : (
+				<div className={"flex-middle h-full"}>
+					<ZeroContent text={"Тут будут отображаться операции по балансу организации"} />
+				</div>
+			)}
+		</section>
+	);
 }

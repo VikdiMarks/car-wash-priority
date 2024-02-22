@@ -5,7 +5,7 @@ import { readCookie } from "@/app/utils/cookie";
 
 export async function sendAuthCode(data) {
 	try {
-		const res = await axios.post(`${process.env.host}/api/v2/send-auth-code`, data);
+		const res = await axios.post(`${process.env.host}/api/v2/organizations/send-auth-code`, data);
 
 		if (res.status === 200) {
 			return true;
