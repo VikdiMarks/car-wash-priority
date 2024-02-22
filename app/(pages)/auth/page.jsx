@@ -100,22 +100,6 @@ export default function Auth() {
 	};
 
 	const handleReg = async () => {
-		const checkPhoneStatus = await checkPhone(loginData);
-
-		if (checkPhoneStatus.errors?.phone) {
-			setErrorMessage(prevState => ({
-				...prevState,
-				errors: { phone: checkPhoneStatus.errors.phone },
-			}));
-			return;
-		} else if (checkPhoneStatus.exists) {
-			setErrorMessage(prevState => ({
-				...prevState,
-				errors: { phone: "Этот номер телефона уже зарегистрирован другим пользователем" },
-			}));
-			return;
-		}
-
 		const isValid = await reg(registrationData);
 		document.cookie = "inn=" + registrationData.inn + "; path=/; samesite=lax;";
 
@@ -257,11 +241,11 @@ export default function Auth() {
 					</Button>
 					<p className={"text-sm text-black/40 text-center max-[430px]:text-[12px]"}>
 						Продолжая использовать сервис, вы соглашаетесь с{" "}
-						<Link className={"text-purple--main"} href="/personal-data-processing">
+						<Link className={"text-purple--main"} href="/political-policy">
 							политикой конфиденциальности
 						</Link>{" "}
 						и{" "}
-						<a className={"text-purple--main"} href="#">
+						<a className={"text-purple--main"} href="/personal-data-processing">
 							правилами предоставления услуг
 						</a>
 					</p>

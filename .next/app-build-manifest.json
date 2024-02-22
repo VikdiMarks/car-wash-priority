@@ -16,25 +16,36 @@
       "static/chunks/main-app.js",
       "static/chunks/app/(pages)/auth/registration/page.js"
     ],
-    "/(pages)/auth/registration/layout": [
+    "/(pages)/(platform)/bills-and-acts/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/(pages)/auth/registration/layout.js"
+      "static/css/app/(pages)/(platform)/bills-and-acts/page.css",
+      "static/chunks/app/(pages)/(platform)/bills-and-acts/page.js"
     ],
     "/(pages)/(platform)/layout": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/(pages)/(platform)/layout.js"
     ],
+    "/(pages)/political-policy/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/(pages)/political-policy/page.js"
+    ],
     "/(pages)/(platform)/drivers/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/(pages)/(platform)/drivers/page.js"
     ],
-    "/(pages)/(platform)/home/page": [
+    "/(pages)/auth/registration/layout": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/(pages)/(platform)/home/page.js"
+      "static/chunks/app/(pages)/auth/registration/layout.js"
+    ],
+    "/(pages)/(platform)/drivers/layout": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/(pages)/(platform)/drivers/layout.js"
     ],
     "/(pages)/(platform)/history/page": [
       "static/chunks/webpack.js",
@@ -42,21 +53,15 @@
       "static/css/app/(pages)/(platform)/history/page.css",
       "static/chunks/app/(pages)/(platform)/history/page.js"
     ],
-    "/(pages)/(platform)/drivers/layout": [
+    "/(pages)/(platform)/home/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/(pages)/(platform)/drivers/layout.js"
+      "static/chunks/app/(pages)/(platform)/home/page.js"
     ],
     "/(pages)/(platform)/settings/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/(pages)/(platform)/settings/page.js"
-    ],
-    "/(pages)/(platform)/bills-and-acts/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/css/app/(pages)/(platform)/bills-and-acts/page.css",
-      "static/chunks/app/(pages)/(platform)/bills-and-acts/page.js"
     ]
   }
 }

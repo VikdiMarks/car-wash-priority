@@ -211,10 +211,10 @@ function PlatformLayout({ children }) {
 					<div className={"grow"}>{children}</div>
 					{windowWidth > 768 && (
 						<div className="flex gap-12 text-black/40 mt-12 lg:flex-col lg:gap-3 lg:items-center">
-							<a className={"hover:opacity-75 ml-auto lg:ml-0"} href="#">
+							<a className={"hover:opacity-75 ml-auto lg:ml-0"} href="mailto:info@carwashpriority.ru">
 								Поддержка
 							</a>
-							<a className={"hover:opacity-75"} href="#">
+							<a className={"hover:opacity-75"} href="/political-policy">
 								Политика конфиденциальности
 							</a>
 							<a className={"hover:opacity-75"} href="/personal-data-processing">

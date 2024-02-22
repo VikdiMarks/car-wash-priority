@@ -1,3 +1,5 @@
+"use client";
+
 import clsx from "clsx";
 import Link from "next/link";
 
@@ -12,15 +14,15 @@ export default function Footer({ textColor }) {
 				},
 				"max-[800px]:flex-col-reverse max-[800px]:gap-4",
 			)}>
-			<p>© Car Wash Priority 2023</p>
+			<p>© Car Wash Priority {new Date().getFullYear()}</p>
 			<div className="flex md:flex-col items-center gap-12 max-[800px]:flex-col md:gap-2">
-				<a className={"hover:opacity-75"} href="#">
+				<a className={"hover:opacity-75 text-white"} href="mailto:info@carwashpriority.ru">
 					Поддержка
 				</a>
-				{/*<a className={"hover:opacity-75"} href="/personal-data-processing">
+				<a className={"hover:opacity-75"} href="/political-policy">
 					Политика конфиденциальности
-				</a>*/}
-				<Link className={"hover:opacity-75"} href="/personal-data-processing">
+				</a>
+				<Link className={"hover:opacity-75 text-white"} href="/personal-data-processing">
 					Правила обработки персональных данных
 				</Link>
 			</div>

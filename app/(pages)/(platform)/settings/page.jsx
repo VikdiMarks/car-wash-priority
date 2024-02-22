@@ -83,7 +83,9 @@ export default function Settings() {
 					<h1 className={repeatingStyles.title}>Информация о компании</h1>
 					<p className={"text-black/40"}>
 						Для изменения данных организации обратитесь в{" "}
-						<span className={"text-purple--main cursor-pointer"}>службу поддержки</span>
+						<a href={"mailto:info@carwashpriority.ru"} className={"text-purple--main cursor-pointer"}>
+							службу поддержки
+						</a>
 					</p>
 				</div>
 				<Input type={"big-input:disabled"} label={"ИНН"} value={organizationInfo?.inn} />
