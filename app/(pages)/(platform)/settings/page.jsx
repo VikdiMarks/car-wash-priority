@@ -97,7 +97,7 @@ export default function Settings() {
 				</div>
 				<Input type={"big-input:disabled"} label={"Расчётный счёт"} value={payInfo?.settlement_number} />
 				<Input type={"big-input:disabled"} label={"Название банка"} value={payInfo?.name} />
-				<Input type={"big-input:disabled"} label={"БИК"} value={payInfo?.bik} />
+				<Input type={"big-input:disabled"} label={"БИК"} value={payInfo?.bic} />
 				<Input
 					type={"big-input:disabled"}
 					label={"Корреспондентский счёт"}
