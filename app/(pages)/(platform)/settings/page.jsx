@@ -111,10 +111,13 @@ export default function Settings() {
 						<Button type={"medium-gray"}>Отменить</Button>
 						<Button
 							clickHandler={async () => {
-								const resName = await editName({ name: profileInfo?.fio });
-								const resEmail = await editEmail({ email: profileInfo?.email });
+								let resName = "";
+								let resEmail = "";
 
-								if (resName && resEmail) {
+								if (profileInfo?.fio) resName = await editName({ name: profileInfo?.fio });
+								if (profileInfo?.email) resEmail = await editEmail({ email: profileInfo?.email });
+
+								if (resName || resEmail) {
 									toast.success("Изменения сохранены");
 								}
 							}}

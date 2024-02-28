@@ -376,7 +376,7 @@ export default function Registration() {
 						<Checkbox
 							title={invalidFields?.dataProcessingConsent ? invalidFields?.dataProcessingConsent : " "}
 							opinion={
-								'<p class="text-black text-opacity-80 text-sm font-normal">Соглашаюсь с <a style="color: #95A4FC" href="/personal-data-processing">Правилами обработки персональных данных</a></p>'
+								'<p class="text-black text-opacity-80 text-sm font-normal">Соглашаюсь с <a style="color: #95A4FC" href="/political-policy">Правилами обработки персональных данных</a></p>'
 							}
 							isCurrent={dataProcessingConsent}
 							setIsCurrent={setDataProcessingConsent}
@@ -385,7 +385,7 @@ export default function Registration() {
 						<Checkbox
 							title={invalidFields?.serviceTermsConsent ? invalidFields?.serviceTermsConsent : " "}
 							opinion={
-								'<p class="text-black text-opacity-80 text-sm font-normal">Соглашаюсь с <a style="color: #95A4FC" href="/political-policy">Правилами предоставления услуг</a></p>'
+								'<p class="text-black text-opacity-80 text-sm font-normal">Соглашаюсь с <a style="color: #95A4FC" href="/service-rules">Правилами предоставления услуг</a></p>'
 							}
 							isCurrent={serviceTermsConsent}
 							setIsCurrent={setServiceTermsConsent}

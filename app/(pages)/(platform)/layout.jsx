@@ -217,8 +217,8 @@ function PlatformLayout({ children }) {
 							<a className={"hover:opacity-75"} href="/political-policy">
 								Политика конфиденциальности
 							</a>
-							<a className={"hover:opacity-75"} href="/personal-data-processing">
-								Правила обработки персональных данных
+							<a className={"hover:opacity-75"} href="/service-rules">
+								Правила предоставления услуг
 							</a>
 						</div>
 					)}
@@ -238,7 +238,7 @@ function PlatformLayout({ children }) {
 							}>
 							История операций
 						</h6>
-						{history ? (
+						{history.length > 0 ? (
 							<div
 								className={
 									"w-full flex flex-col gap-2 items-center justify-items-start h-full overflow-y-auto"
@@ -272,8 +272,8 @@ function PlatformLayout({ children }) {
 							<a className={"hover:opacity-75"} href="#">
 								Политика конфиденциальности
 							</a>
-							<a className={"hover:opacity-75"} href="/personal-data-processing">
-								Правила обработки персональных данных
+							<a className={"hover:opacity-75"} href="/service-rules">
+								Правила предоставления услуг
 							</a>
 						</div>
 					</>

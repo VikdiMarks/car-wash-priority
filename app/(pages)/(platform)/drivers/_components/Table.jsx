@@ -10,7 +10,7 @@ import { useEffect, useState } from "react";
 import Item from "@/app/(pages)/(platform)/drivers/_components/Item";
 import { deleteDriver, setBalance } from "@/app/(pages)/(platform)/drivers/drivers";
 import { getOrganizationData } from "@/app/(pages)/(platform)/platform";
-import formatPhoneNumber from "@/app/utils/utils";
+import { formatPhoneNumber } from "@/app/utils/utils";
 
 export default function Table({ drivers = [], updateDrivers }) {
 	const [popups, setPopups] = useState({

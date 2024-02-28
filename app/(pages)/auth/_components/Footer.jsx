@@ -22,8 +22,8 @@ export default function Footer({ textColor }) {
 				<a className={"hover:opacity-75"} href="/political-policy">
 					Политика конфиденциальности
 				</a>
-				<Link className={"hover:opacity-75 text-white"} href="/personal-data-processing">
-					Правила обработки персональных данных
+				<Link className={"hover:opacity-75 text-white"} href="/service-rules">
+					Правила предоставления услуг
 				</Link>
 			</div>
 		</footer>

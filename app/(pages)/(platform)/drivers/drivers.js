@@ -1,7 +1,9 @@
 import { axiosInstance } from "@/app/utils/axios-instance";
 import { readCookie } from "@/app/utils/cookie";
+import { saveOrganizationData } from "@/app/(pages)/auth/auth";
 
 export async function addDrivers(data) {
+	await saveOrganizationData();
 	const res = await axiosInstance.post(`/api/v2/organizations/${readCookie("organization_id")}/users`, data);
 
 	try {
@@ -18,6 +20,7 @@ export async function addDrivers(data) {
 }
 
 export async function deleteDriver(userId) {
+	await saveOrganizationData();
 	const res = await axiosInstance.delete(`/api/v2/organizations/${readCookie("organization_id")}/users/${userId}`);
 
 	try {
@@ -34,6 +37,7 @@ export async function deleteDriver(userId) {
 }
 
 export async function getDrivers(page = 1, per_page = 15) {
+	await saveOrganizationData();
 	const res = await axiosInstance.get(
 		`/api/v2/organizations/${readCookie("organization_id")}/users?role_id=0&page=${page}&per_page=${per_page}`,
 	);
@@ -52,6 +56,7 @@ export async function getDrivers(page = 1, per_page = 15) {
 }
 
 export async function setDayAutoBalanceReq(data) {
+	await saveOrganizationData();
 	const res = await axiosInstance.post(
 		`/api/v2/organizations/${readCookie("organization_id")}/set-day-auto-balance`,
 		data,
@@ -71,6 +76,7 @@ export async function setDayAutoBalanceReq(data) {
 }
 
 export async function setBalance(data, userId) {
+	await saveOrganizationData();
 	const res = await axiosInstance.post(
 		`/api/v2/organizations/${readCookie("organization_id")}/users/${userId}/set-balance`,
 		data,

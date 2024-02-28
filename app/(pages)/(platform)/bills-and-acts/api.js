@@ -1,8 +1,10 @@
 import { axiosInstance } from "@/app/utils/axios-instance";
 import { readCookie } from "@/app/utils/cookie";
+import { saveOrganizationData } from "@/app/(pages)/auth/auth";
 
 export async function getInvoices(page = 1) {
 	try {
+		await saveOrganizationData();
 		const res = await axiosInstance.get(
 			`${process.env.host}/api/v2/organizations/${readCookie("organization_id")}/invoices?page=${page}`,
 		);
@@ -20,6 +22,7 @@ export async function getInvoices(page = 1) {
 
 export async function getActs(page = 1) {
 	try {
+		await saveOrganizationData();
 		const res = await axiosInstance.get(
 			`${process.env.host}/api/v2/organizations/${readCookie("organization_id")}/acts?page=${page}`,
 		);
@@ -37,6 +40,7 @@ export async function getActs(page = 1) {
 
 export async function getInvoicesFile(id, uuid) {
 	try {
+		await saveOrganizationData();
 		const res = await axiosInstance.get(
 			`${process.env.host}/api/v2/organizations/${readCookie(
 				"organization_id",

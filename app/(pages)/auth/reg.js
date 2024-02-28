@@ -1,6 +1,7 @@
 import axios from "axios";
 import { axiosInstance } from "@/app/utils/axios-instance";
 import { readCookie } from "@/app/utils/readCookie";
+import { saveOrganizationData } from "@/app/(pages)/auth/auth";
 
 export async function reg(data) {
 	try {
@@ -68,6 +69,7 @@ export async function setData(data) {
 
 export async function reqPayData(data) {
 	try {
+		await saveOrganizationData();
 		const res = await axiosInstance.post(
 			`/api/v2/organizations/${readCookie("organization_id")}/registration/set-pay-data`,
 			data,

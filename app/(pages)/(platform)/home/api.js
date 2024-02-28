@@ -1,8 +1,10 @@
 import { axiosInstance } from "@/app/utils/axios-instance";
 import { readCookie } from "@/app/utils/cookie";
+import { saveOrganizationData } from "@/app/(pages)/auth/auth";
 
 export async function getCountWash() {
 	try {
+		await saveOrganizationData();
 		const res = await axiosInstance.get(
 			`${process.env.host}/api/v2/organizations/${readCookie("organization_id")}/transactions?per_page=999`,
 		);

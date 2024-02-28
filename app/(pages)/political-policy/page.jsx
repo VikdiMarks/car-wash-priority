@@ -407,8 +407,8 @@ export default function PoliticalPolicy() {
 					<a className={"hover:opacity-75"} href="#">
 						Политика конфиденциальности
 					</a>
-					<a className={"hover:opacity-75"} href="/personal-data-processing">
-						Правила обработки персональных данных
+					<a className={"hover:opacity-75"} href="/service-rules">
+						Правила предоставления услуг
 					</a>
 				</div>
 			</footer>

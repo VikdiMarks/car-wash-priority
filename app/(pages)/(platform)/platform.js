@@ -1,9 +1,11 @@
 import { readCookie } from "@/app/utils/cookie";
 import { axiosInstance } from "@/app/utils/axios-instance";
 import axios from "axios";
+import { saveOrganizationData } from "@/app/(pages)/auth/auth";
 
 export async function getOrganizationData() {
 	try {
+		await saveOrganizationData();
 		const res = await axiosInstance.get(
 			`${process.env.host}/api/v2/organizations/${readCookie("organization_id")}`,
 		);

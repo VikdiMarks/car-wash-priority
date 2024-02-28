@@ -1,14 +1,13 @@
 import Image from "next/image";
+import imgZeroContent from "@/public/img/pictures/zero-content.png";
 
 export default function ZeroContent({ text }) {
 	return (
 		<div className={"flex-middle flex-col gap-4"}>
-			<Image
-				width={100}
-				height={100}
-				src={"/img/pictures/zero-content.png"}
-				alt={"Тут пусто"}
-			/>
+			<div
+				className={
+					"w-25 h-25 bg-[url('/img/pictures/zero-content.png')] bg-no-repeat bg-cover bg-center"
+				}></div>
 			{text && <p className={"text-black/40 text-center"}>{text}</p>}
 		</div>
 	);

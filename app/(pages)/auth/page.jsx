@@ -245,7 +245,7 @@ export default function Auth() {
 							политикой конфиденциальности
 						</Link>{" "}
 						и{" "}
-						<a className={"text-purple--main"} href="/personal-data-processing">
+						<a className={"text-purple--main"} href="/service-rules">
 							правилами предоставления услуг
 						</a>
 					</p>
