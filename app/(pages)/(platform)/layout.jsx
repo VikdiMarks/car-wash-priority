@@ -14,6 +14,7 @@ import { createInvoices, getOrganizationData } from "@/app/(pages)/(platform)/pl
 import withAuth from "@/app/utils/withAuth";
 import Footer from "@/app/(pages)/auth/_components/Footer";
 import { getHistory, getUsers } from "@/app/(pages)/(platform)/history/api";
+import toast from "react-hot-toast";
 
 function PlatformLayout({ children }) {
 	const pathname = usePathname();
@@ -26,6 +27,46 @@ function PlatformLayout({ children }) {
 	const [windowWidth, setWindowWidth] = useState(0);
 	const [organizationInfo, setOrganizationInfo] = useState({});
 	const [invoices, setInvoices] = useState({});
+	const [loadingPage, setLoadingPage] = useState(false);
+	const [navItems, setNavItems] = useState([
+		{
+			id: "home",
+			text: "Главная",
+			icon: "statistic",
+			pathname: "/home",
+			active: usePathname() === "/home",
+		},
+		{
+			id: "drivers",
+			text: "Водители",
+			icon: "car",
+			pathname: "/drivers",
+			active: usePathname() === "/drivers",
+		},
+		{
+			id: "history",
+			text: "История",
+			icon: "box",
+			pathname: "/history",
+			active: usePathname() === "/history",
+		},
+		{
+			id: "bills-and-acts",
+			text: "Счета и акты",
+			icon: "document",
+			pathname: "/bills-and-acts",
+			active: usePathname() === "/bills-and-acts",
+		},
+		{
+			id: "settings",
+			text: "Настройки",
+			icon: "passport",
+			pathname: "/settings",
+			active: usePathname() === "/settings",
+		},
+	]);
+	const [toastId, setToastId] = useState(null);
+	const [intervalId, setIntervalId] = useState(null);
 
 	useEffect(() => {
 		setWindowWidth(window.innerWidth);
@@ -34,6 +75,41 @@ function PlatformLayout({ children }) {
 	useEffect(() => {
 		setIsHaveContent(window.location.href.split("#")[1] === "fill");
 	}, []);
+
+	const switchLoadingPage = (id, pathname) => {
+		console.log("switchLoadingPage", pathname);
+
+		if (toastId !== null) {
+			toast.dismiss(toastId);
+		}
+		if (intervalId !== null) {
+			clearInterval(intervalId);
+		}
+		setToastId(
+			toast.loading("Подождите. Загружаем информацию", {
+				position: "top-center",
+			}),
+		);
+		setIntervalId(
+			setInterval(() => {
+				const currentPathname = location && location.pathname;
+
+				console.log(currentPathname, pathname);
+				if (currentPathname === pathname) {
+					toast.dismiss(toastId);
+					setToastId(null);
+					clearInterval(intervalId);
+				}
+			}, 100),
+		);
+
+		setNavItems(prevState => {
+			prevState.forEach(item => {
+				item.active = item.id === id;
+			});
+			return prevState;
+		});
+	};
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -54,11 +130,10 @@ function PlatformLayout({ children }) {
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
-				const data = await getHistory(1, 999);
-
-				if (data) {
+				// const data = await getHistory(1, 50);
+				/*if (data) {
 					setHistory(data.models);
-				}
+				}*/
 			} catch (error) {
 				console.error("Ошибка при получении данных об организации", error);
 			}
@@ -173,11 +248,17 @@ function PlatformLayout({ children }) {
 						<div
 							className="flex flex-col gap-1 md:mb-1 md:mt-4 md:items-center md:px-20"
 							onClick={() => setMenuOpen(false)}>
-							<MenuItem text={"Главная"} icon={"statistic"} path={"/home"} />
-							<MenuItem text={"Водители"} icon={"car"} path={"/drivers"} />
-							<MenuItem text={"История"} icon={"box"} path={"/history"} />
-							<MenuItem text={"Счета и акты"} icon={"document"} path={"/bills-and-acts"} />
-							<MenuItem text={"Настройки"} icon={"passport"} path={"/settings"} />
+							{navItems.map((item, index) => (
+								<MenuItem
+									id={item.id}
+									text={item.text}
+									icon={item.icon}
+									path={item.pathname}
+									active={item.active}
+									switchLoadingPage={switchLoadingPage}
+									key={index}
+								/>
+							))}
 							<div className={"mt-3 w-full"}>
 								<Button
 									type={"danger-secondary"}
