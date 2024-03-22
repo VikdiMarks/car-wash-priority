@@ -2,7 +2,7 @@
 
 module.exports = {
 	env: {
-		host: "https://loyalty.myeco24.ru",
+		host: "https://loyalty.myeco23.ru",
 		output: "export",
 	},
 };

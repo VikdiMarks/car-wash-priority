@@ -2,17 +2,20 @@ import axios from "axios";
 import { redirect } from "next/navigation";
 import { axiosInstance } from "@/app/utils/axios-instance";
 import { readCookie } from "@/app/utils/cookie";
+import toast from "react-hot-toast";
 
 export async function sendAuthCode(data) {
 	try {
 		const res = await axios.post(`${process.env.host}/api/v2/organizations/send-auth-code`, data);
 
 		if (res.status === 200) {
+			toast.success("Код подтверждения отправлен вам на номер");
 			return true;
 		}
 		console.error("Ошибка при отправке send-auth-code:", res.status);
 		return res.data;
 	} catch (error) {
+		toast.error("Подождите 120 секунд");
 		console.error("Ошибка при отправке send-auth-code:", error);
 		return error;
 	}

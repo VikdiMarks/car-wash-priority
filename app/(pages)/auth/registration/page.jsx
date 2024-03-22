@@ -230,14 +230,19 @@ export default function Registration() {
 						)}
 					</div>
 					<div>
-						<Button clickHandler={typeAuth === "login" ? loginVerify : handleVerify} type={"success"}>
-							Подтвердить
-						</Button>
+						<div className={"flex gap-4"}>
+							<Button clickHandler={() => router.push("/auth")} type={"secondary"}>
+								Вернуться
+							</Button>
+							<Button clickHandler={typeAuth === "login" ? loginVerify : handleVerify} type={"success"}>
+								Подтвердить
+							</Button>
+						</div>
 						<p className={"text-sm text-black/40 text-center mt-4"}>
 							Не получили код?{" "}
-							<a className={"text-purple--main"} href="#" onClick={() => sendAuthCode({ phone: phone })}>
+							<button className={"text-purple--main"} onClick={() => sendAuthCode({ phone: phone })}>
 								Выслать новый
-							</a>{" "}
+							</button>{" "}
 							или{" "}
 							<a className={"text-purple--main"} href="mailto:carwashpriority@yandex.ru">
 								Напишите нам

@@ -118,9 +118,9 @@ export default function DriversLayout({ children }) {
 									<p>Правила пополнения баланса водителей</p>
 									<p className={"text-black/40"}>
 										Средства пополняются один раз в сутки в 00:01 по Московскому времени.{" "}
-										<span className={"text-purple--secondary cursor-pointer"}>
+										<a href={"/service-rules"} className={"text-purple--secondary cursor-pointer"}>
 											Подробные правила
-										</span>
+										</a>
 									</p>
 								</div>
 							</div>
