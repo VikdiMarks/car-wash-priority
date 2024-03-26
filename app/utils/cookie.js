@@ -1,14 +1,7 @@
 export function readCookie(name) {
 	let breakMethod = false;
 
-	setTimeout(
-		() => {
-			breakMethod = true;
-		},
-		3 * 60 * 3600,
-	);
-
-	if (typeof document !== "undefined" && !breakMethod) {
+	if (typeof document !== "undefined") {
 		const matches = document.cookie.match(
 			new RegExp("(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, "\\$1") + "=([^;]*)"),
 		);
